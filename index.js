@@ -98,17 +98,29 @@ async function initMaps() {
   rightMapMarkerPosition = { lat: 36.014313, lng: -75.66791 }; // Wright Brothers Memorial, Kill Devil Hills, NC
   centerMapMarkerPosition = { lat: 38.624745, lng: -90.185258 }; // Gateway Arch, St. Louis, MO
 
-  leftMarker.addListener("dragend", () => markerMoved(leftMarker));
-  rightMarker.addListener("dragend", () => markerMoved(rightMarker));
-  centerMarker.addListener("dragend", () => markerMoved(centerMarker));
+  leftMarker.addListener("drag", debounce(() => markerMoved(leftMarker), 10));
+  centerMarker.addListener("drag", debounce(() => markerMoved(centerMarker), 10));
+  rightMarker.addListener("drag", debounce(() => markerMoved(rightMarker), 10));
+
+  leftMarker.addListener("dragend", () => centerMaps([leftMap]));
+  centerMarker.addListener("dragend", () => centerMaps([centerMap]));
+  rightMarker.addListener("dragend", () => centerMaps([rightMap]));
+
+
+
+
+  // Recenter on the placemarks
+  leftMap.setCenter(leftMapMarkerPosition);
+  centerMap.setCenter(centerMapMarkerPosition);
+  rightMap.setCenter(rightMapMarkerPosition);
+
 
   updateMaps();
 }
 
 function drawGeodesicLine(path, map) {
   // Create a new polyline with the path, set geodesic to true, and add it to the map
-  const geodesicLine = new google.maps.Polyline({
-    path: path,
+  const geodesicLine = new google.maps.Polyline({    path: path,
     geodesic: true, // This makes the line follow the curvature of the Earth
     map: map,
   });
@@ -122,6 +134,19 @@ function markerMoved(movedMarker) {
   } else {
     endpointMarkerMoved(movedMarker);
   }
+}
+
+function debounce(func, wait) {
+  var timeout;
+  return function() {
+    var context = this, args = arguments;
+    var later = function() {
+      timeout = null;
+      func.apply(context, args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
 }
 
 function centerMarkerMoved(centerMarker) {
@@ -155,6 +180,7 @@ function centerMarkerMoved(centerMarker) {
 
   // Update the maps
   updateMaps();
+  centerMaps([rightMap]);
 }
 
 function endpointMarkerMoved(movedMarker) {
@@ -162,6 +188,8 @@ function endpointMarkerMoved(movedMarker) {
     movedMarker === leftMarker ? leftMapMarkerPosition : rightMapMarkerPosition;
   const oppositeMarkerPosition =
     movedMarker === leftMarker ? rightMapMarkerPosition : leftMapMarkerPosition;
+
+  const oppositeMap = movedMarker === leftMarker ? rightMap : leftMap;
 
   // Get the current position of the moved marker
   const newPosition = movedMarker.getPosition().toJSON();
@@ -192,8 +220,23 @@ function endpointMarkerMoved(movedMarker) {
 
   // Update the maps
   updateMaps();
+  centerMaps([oppositeMap]);
 }
 
+function centerMaps(maps) {
+  // inteterate over each maps and call setCenter
+  maps.forEach((map) => {
+    if (map === leftMap) {
+      leftMap.setCenter(leftMapMarkerPosition);
+    }
+    if (map === centerMap) {
+      centerMap.setCenter(centerMapMarkerPosition);
+    }
+    if (map === rightMap) {
+      rightMap.setCenter(rightMapMarkerPosition);
+    }
+  });
+}
 
 function updateMaps() {
   polylines.forEach((polyline) => polyline.setMap(null));
@@ -206,11 +249,6 @@ function updateMaps() {
   leftMarker.setPosition(leftMapMarkerPosition);
   centerMarker.setPosition(centerMapMarkerPosition);
   rightMarker.setPosition(rightMapMarkerPosition);
-
-  // Recenter on the placemarks
-  leftMap.setCenter(leftMapMarkerPosition);
-  centerMap.setCenter(centerMapMarkerPosition);
-  rightMap.setCenter(rightMapMarkerPosition);
 
   // Draw the new geodesic lines on all three maps and store them
   polylines.push(drawGeodesicLine(path, leftMap));
