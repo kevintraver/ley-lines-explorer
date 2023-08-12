@@ -218,4 +218,4 @@ function updateMaps() {
   polylines.push(drawGeodesicLine(path, rightMap));
 }
 
-window.addEventListener("load", initMaps);
+window.initMaps = initMaps;
