@@ -26,6 +26,7 @@ async function initMaps() {
     leftMapMarkerPosition = { lat: location.lat(), lng: location.lng() };
     leftMarker.setPosition(leftMapMarkerPosition);
     markerMoved(leftMarker);
+    centerMaps([leftMap]);
   });
   
   const centerSearchBox = new google.maps.places.SearchBox(
@@ -38,6 +39,7 @@ async function initMaps() {
     centerMapMarkerPosition = { lat: location.lat(), lng: location.lng() };
     centerMarker.setPosition(centerMapMarkerPosition);
     markerMoved(centerMarker); // Trigger markerMoved function for centerMarker
+    centerMaps([centerMap]);
   });
   
 
@@ -51,6 +53,7 @@ async function initMaps() {
     rightMapMarkerPosition = { lat: location.lat(), lng: location.lng() };
     rightMarker.setPosition(rightMapMarkerPosition);
     markerMoved(rightMarker);
+    centerMaps([rightMap]);
   });
 
   const { Map } = await google.maps.importLibrary("maps");
