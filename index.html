@@ -1,0 +1,30 @@
+<html>
+  <head>
+    <title>Ley Lines Explorer</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script type="module" src="index.js"></script>
+  </head>
+  <body>
+
+    <div class="panel">
+      <input type="text" id="left-search-input" class="search-input" placeholder="Search..." />
+      <div id="left-map" class="map-panel"></div>
+    </div>
+    <!-- Center panel with search and map -->
+    <div class="panel">
+      <input type="text" id="center-search-input" class="search-input" placeholder="Search..." />
+      <div id="center-map" class="map-panel"></div>
+    </div>
+    <!-- Right panel with search and map -->
+    <div class="panel">
+      <input type="text" id="right-search-input" class="search-input" placeholder="Search..." />
+      <div id="right-map" class="map-panel"></div>
+    </div>
+
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&libraries=geometry,places"
+      defer
+    ></script>
+  </body>
+</html>
