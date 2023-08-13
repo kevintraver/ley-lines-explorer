@@ -96,6 +96,18 @@ async function initMaps() {
     title: "Right Marker",
     draggable: true,
   });
+  
+  document.getElementById("left-recenter-button").addEventListener("click", () => {
+    leftMap.setCenter(leftMapMarkerPosition);
+  });
+
+  document.getElementById("center-recenter-button").addEventListener("click", () => {
+    centerMap.setCenter(centerMapMarkerPosition);
+  });
+
+  document.getElementById("right-recenter-button").addEventListener("click", () => {
+    rightMap.setCenter(rightMapMarkerPosition);
+  });
 
   leftMapMarkerPosition = { lat: 37.778379, lng: -122.389711 }; // Oracle Park, San Francisco, CA
   rightMapMarkerPosition = { lat: 36.014313, lng: -75.66791 }; // Wright Brothers Memorial, Kill Devil Hills, NC
