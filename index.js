@@ -1,23 +1,27 @@
-// Global variables to store the markers and path
+// array to track lines
 let polylines = [];
 
-let lockedMarker;
-
+// Maps and related configurations
 let leftMap;
 let rightMap;
 let centerMap;
 
+let leftMapMarkerPosition;
+let centerMapMarkerPosition;
+let rightMapMarkerPosition;
+
+// Markers for different maps
 let leftMarkers = [];
 let centerMarkers = [];
 let rightMarkers = [];
 
+// Specific markers to track updating on events
 let leftMarker;
 let centerMarker;
 let rightMarker;
 
-let leftMapMarkerPosition;
-let centerMapMarkerPosition;
-let rightMapMarkerPosition;
+// variable to track which marker is locked
+let lockedMarker;
 
 async function initMaps() {
 
