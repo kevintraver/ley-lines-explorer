@@ -230,10 +230,10 @@ function markerMoved(movedMarker) {
 }
 
 function debounce(func, wait) {
-  var timeout;
+  let timeout;
   return function() {
-    var context = this, args = arguments;
-    var later = function() {
+    let context = this, args = arguments;
+    let later = function() {
       timeout = null;
       func.apply(context, args);
     };
