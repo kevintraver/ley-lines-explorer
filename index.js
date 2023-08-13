@@ -73,7 +73,6 @@ async function initMaps () {
 
   const { Map } = await google.maps.importLibrary('maps')
   const { Marker } = await google.maps.importLibrary('marker')
-  const { spherical } = await google.maps.importLibrary('geometry')
 
   const mapOptions = {
     zoom: 14,
