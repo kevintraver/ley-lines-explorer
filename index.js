@@ -177,14 +177,44 @@ async function initMaps() {
   updateMaps();
 }
 
-function drawGeodesicLine(path, map) {
-  // Create a new polyline with the path, set geodesic to true, and add it to the map
-  const geodesicLine = new google.maps.Polyline({    path: path,
-    geodesic: true, // This makes the line follow the curvature of the Earth
+function drawGeodesicLine(start, end, map) {
+  // Calculate the midpoint between start and end
+  const midpoint = google.maps.geometry.spherical.interpolate(
+    new google.maps.LatLng(start),
+    new google.maps.LatLng(end),
+    0.5
+  );
+
+  // Calculate the antipodal point of the midpoint
+  const antipodalMidpoint = {
+    lat: -midpoint.lat(),
+    lng: (midpoint.lng() + 180) % 360,
+  };
+
+  // Shortest path (geodesic)
+  const pathShortest = [start, end];
+
+  // Longer path (geodesic) that goes around the Earth in the opposite direction
+  const pathLonger = [start, antipodalMidpoint, end];
+
+  // Create the polyline for the shorter path and add it to the map
+  const geodesicLineShortest = new google.maps.Polyline({
+    path: pathShortest,
+    geodesic: true,
     map: map,
   });
 
-  return geodesicLine;
+  // Create the polyline for the longer path, set geodesic to true, and add it to the map
+  // Set strokeOpacity to 0.5 to make it slightly transparent
+  const geodesicLineLonger = new google.maps.Polyline({
+    path: pathLonger,
+    geodesic: true,
+    map: map,
+    strokeWeight: 3,
+    strokeOpacity: 0.33,
+  });
+
+  return [geodesicLineShortest, geodesicLineLonger];
 }
 
 function markerMoved(movedMarker) {
@@ -338,9 +368,9 @@ function updateMaps() {
   rightMarkers.forEach(marker => marker.setPosition(rightMapMarkerPosition));
 
   // Draw the new geodesic lines on all three maps and store them
-  polylines.push(drawGeodesicLine(path, leftMap));
-  polylines.push(drawGeodesicLine(path, centerMap));
-  polylines.push(drawGeodesicLine(path, rightMap));
+  polylines.push(...drawGeodesicLine(leftMapMarkerPosition, rightMapMarkerPosition, leftMap));
+  polylines.push(...drawGeodesicLine(leftMapMarkerPosition, rightMapMarkerPosition, centerMap));
+  polylines.push(...drawGeodesicLine(leftMapMarkerPosition, rightMapMarkerPosition, rightMap));
 }
 
 window.initMaps = initMaps;
