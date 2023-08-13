@@ -32,10 +32,12 @@ async function initMaps() {
     const places = leftSearchBox.getPlaces();
     if (places.length === 0) return;
     const location = places[0].geometry.location;
+    const viewport = places[0].geometry.viewport;
     leftMapMarkerPosition = { lat: location.lat(), lng: location.lng() };
     leftMarker.setPosition(leftMapMarkerPosition);
     markerMoved(leftMarker);
     centerMaps([leftMap]);
+    fitMapToBounds(leftMap, viewport);
   });
   
   const centerSearchBox = new google.maps.places.SearchBox(
@@ -45,10 +47,12 @@ async function initMaps() {
     const places = centerSearchBox.getPlaces();
     if (places.length === 0) return;
     const location = places[0].geometry.location;
+    const viewport = places[0].geometry.viewport;
     centerMapMarkerPosition = { lat: location.lat(), lng: location.lng() };
     centerMarker.setPosition(centerMapMarkerPosition);
     markerMoved(centerMarker); // Trigger markerMoved function for centerMarker
     centerMaps([centerMap]);
+    fitMapToBounds(centerMap, viewport);
   });
   
 
@@ -59,10 +63,12 @@ async function initMaps() {
     const places = rightSearchBox.getPlaces();
     if (places.length === 0) return;
     const location = places[0].geometry.location;
+    const viewport = places[0].geometry.viewport;
     rightMapMarkerPosition = { lat: location.lat(), lng: location.lng() };
     rightMarker.setPosition(rightMapMarkerPosition);
     markerMoved(rightMarker);
     centerMaps([rightMap]);
+    fitMapToBounds(rightMap, viewport);
   });
 
   const { Map } = await google.maps.importLibrary("maps");
@@ -313,6 +319,14 @@ function clearSearchInput(movedMarker) {
 
   if (inputId) {
     document.getElementById(inputId).value = "";
+  }
+}
+
+function fitMapToBounds(map, viewport) {
+  if (viewport) {
+    map.fitBounds(viewport);
+  } else {
+    map.setZoom(14);
   }
 }
 
