@@ -1,6 +1,4 @@
 // Global variables to store the markers and path
-let path;
-
 let polylines = [];
 
 let lockedMarker;
@@ -333,9 +331,6 @@ function fitMapToBounds(map, viewport) {
 function updateMaps() {
   polylines.forEach((polyline) => polyline.setMap(null));
   polylines = [];
-
-  // Update the path based on the current marker positions
-  path = [leftMapMarkerPosition, rightMapMarkerPosition];
 
   // Update the placemarks on all three maps
   leftMarkers.forEach(marker => marker.setPosition(leftMapMarkerPosition));
