@@ -117,12 +117,18 @@ async function initMaps() {
   centerMarker.addListener("drag", debounce(() => markerMoved(centerMarker), 10));
   rightMarker.addListener("drag", debounce(() => markerMoved(rightMarker), 10));
 
-  leftMarker.addListener("dragend", () => centerMaps([leftMap]));
-  centerMarker.addListener("dragend", () => centerMaps([centerMap]));
-  rightMarker.addListener("dragend", () => centerMaps([rightMap]));
-
-
-
+  leftMarker.addListener("dragend", () => {
+    clearSearchInput(leftMarker);
+    centerMaps([leftMap]);
+  });
+  centerMarker.addListener("dragend", () => {
+    clearSearchInput(centerMarker);
+    centerMaps([centerMap]);
+  });
+  rightMarker.addListener("dragend", () => {
+    clearSearchInput(rightMarker);
+    centerMaps([rightMap]);
+  });
 
   // Recenter on the placemarks
   leftMap.setCenter(leftMapMarkerPosition);
@@ -251,6 +257,21 @@ function centerMaps(maps) {
       rightMap.setCenter(rightMapMarkerPosition);
     }
   });
+}
+
+function clearSearchInput(movedMarker) {
+  let inputId;
+  if (movedMarker === leftMarker) {
+    inputId = "left-search-input";
+  } else if (movedMarker === centerMarker) {
+    inputId = "center-search-input";
+  } else if (movedMarker === rightMarker) {
+    inputId = "right-search-input";
+  }
+
+  if (inputId) {
+    document.getElementById(inputId).value = "";
+  }
 }
 
 function updateMaps() {
