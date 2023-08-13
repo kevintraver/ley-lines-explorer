@@ -3,6 +3,8 @@ let path;
 
 let polylines = [];
 
+let lockedMarker;
+
 let leftMap;
 let rightMap;
 let centerMap;
@@ -16,6 +18,9 @@ let centerMapMarkerPosition;
 let rightMapMarkerPosition;
 
 async function initMaps() {
+
+  lockedMarker = 'right';
+
   const leftSearchBox = new google.maps.places.SearchBox(
     document.getElementById("left-search-input")
   );
@@ -109,6 +114,13 @@ async function initMaps() {
     rightMap.setCenter(rightMapMarkerPosition);
   });
 
+  document.getElementById("lock-left-marker").addEventListener("change", () => {
+    lockedMarker = 'left';
+  });
+  document.getElementById("lock-right-marker").addEventListener("change", () => {
+    lockedMarker = 'right';
+  });
+  
   leftMapMarkerPosition = { lat: 37.778379, lng: -122.389711 }; // Oracle Park, San Francisco, CA
   rightMapMarkerPosition = { lat: 36.014313, lng: -75.66791 }; // Wright Brothers Memorial, Kill Devil Hills, NC
   centerMapMarkerPosition = { lat: 38.624745, lng: -90.185258 }; // Gateway Arch, St. Louis, MO
@@ -171,37 +183,45 @@ function debounce(func, wait) {
 }
 
 function centerMarkerMoved(centerMarker) {
-  // Get the current position of the center marker
   const newPosition = centerMarker.getPosition().toJSON();
-
-  // Update the global center position object
   centerMapMarkerPosition.lat = newPosition.lat;
   centerMapMarkerPosition.lng = newPosition.lng;
 
-  // Calculate the distance and bearing from the new center marker to the left marker
+  // Determine the target and opposite positions based on the locked marker
+  const targetPosition = lockedMarker === 'right' ? leftMapMarkerPosition : rightMapMarkerPosition;
+  const oppositePosition = lockedMarker === 'right' ? rightMapMarkerPosition : leftMapMarkerPosition;
+
+  // Calculate the distance and bearing from the center marker to the target position
   const distance = google.maps.geometry.spherical.computeDistanceBetween(
     new google.maps.LatLng(newPosition),
-    new google.maps.LatLng(rightMapMarkerPosition)
+    new google.maps.LatLng(targetPosition)
   );
-  const bearingToLeft = google.maps.geometry.spherical.computeHeading(
+  const bearing = google.maps.geometry.spherical.computeHeading(
     new google.maps.LatLng(newPosition),
-    new google.maps.LatLng(leftMapMarkerPosition)
+    new google.maps.LatLng(oppositePosition)
   );
 
-  // Calculate the position of the right marker by moving the same distance from the new center marker
-  // but in the opposite direction (180 degrees from the bearing to the left marker)
-  const rightLatLng = google.maps.geometry.spherical.computeOffset(
+  // Calculate the opposite position based on the distance and bearing
+  const oppositeLatLng = google.maps.geometry.spherical.computeOffset(
     new google.maps.LatLng(newPosition),
     distance,
-    bearingToLeft + 180
+    bearing + 180
   );
 
-  rightMapMarkerPosition.lat = rightLatLng.lat();
-  rightMapMarkerPosition.lng = rightLatLng.lng();
+  // Update the global position objects based on the locked marker
+  if (lockedMarker === 'right') {
+    leftMapMarkerPosition.lat = oppositeLatLng.lat();
+    leftMapMarkerPosition.lng = oppositeLatLng.lng();
+  } else {
+    rightMapMarkerPosition.lat = oppositeLatLng.lat();
+    rightMapMarkerPosition.lng = oppositeLatLng.lng();
+  }
 
   // Update the maps
   updateMaps();
-  centerMaps([rightMap]);
+
+  // Center the map on the opposite marker that has been moved
+  centerMaps([lockedMarker === 'right' ? leftMap : rightMap]);
 }
 
 function endpointMarkerMoved(movedMarker) {
