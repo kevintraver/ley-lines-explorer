@@ -9,6 +9,10 @@ let leftMap;
 let rightMap;
 let centerMap;
 
+let leftMarkers = [];
+let centerMarkers = [];
+let rightMarkers = [];
+
 let leftMarker;
 let centerMarker;
 let rightMarker;
@@ -85,23 +89,31 @@ async function initMaps() {
     ...mapOptions,
     mapId: "RIGHT_MAP",
   });
-
-  leftMarker = new Marker({
-    map: leftMap,
-    title: "Left Marker",
-    draggable: true,
-  });
-  centerMarker = new Marker({
-    map: centerMap,
-    title: "Center",
-    draggable: true,
-  });
-  rightMarker = new Marker({
-    map: rightMap,
-    title: "Right Marker",
-    draggable: true,
-  });
   
+  // Create leftMarker on all three maps
+  leftMarkers = [
+    new Marker({ map: leftMap, title: "Left Marker", draggable: true }),
+    new Marker({ map: centerMap, title: "Left Marker", draggable: false}),
+    new Marker({ map: rightMap, title: "Left Marker", draggable: false}),
+  ];
+  leftMarker = leftMarkers[0];
+
+  // Create centerMarker on all three maps
+  centerMarkers = [
+    new Marker({ map: leftMap, title: "Center Marker", draggable: false}),
+    new Marker({ map: centerMap, title: "Center Marker", draggable: true}),
+    new Marker({ map: rightMap, title: "Center Marker", draggable: false}),
+  ];
+  centerMarker = centerMarkers[1];
+
+  // Create rightMarker on all three maps
+  rightMarkers = [
+    new Marker({ map: leftMap, title: "Right Marker", draggable: false}),
+    new Marker({ map: centerMap, title: "Right Marker", draggable: false}),
+    new Marker({ map: rightMap, title: "Right Marker", draggable: true }),
+  ];
+  rightMarker = rightMarkers[2];
+
   document.getElementById("left-recenter-button").addEventListener("click", () => {
     leftMap.setCenter(leftMapMarkerPosition);
   });
@@ -301,10 +313,10 @@ function updateMaps() {
   // Update the path based on the current marker positions
   path = [leftMapMarkerPosition, rightMapMarkerPosition];
 
-  // Update the placemarks
-  leftMarker.setPosition(leftMapMarkerPosition);
-  centerMarker.setPosition(centerMapMarkerPosition);
-  rightMarker.setPosition(rightMapMarkerPosition);
+  // Update the placemarks on all three maps
+  leftMarkers.forEach(marker => marker.setPosition(leftMapMarkerPosition));
+  centerMarkers.forEach(marker => marker.setPosition(centerMapMarkerPosition));
+  rightMarkers.forEach(marker => marker.setPosition(rightMapMarkerPosition));
 
   // Draw the new geodesic lines on all three maps and store them
   polylines.push(drawGeodesicLine(path, leftMap));
