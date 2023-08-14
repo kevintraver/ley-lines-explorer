@@ -154,6 +154,14 @@ async function initMaps () {
   document.getElementById('lock-left-marker-to-bearing').addEventListener('change', (event) => {
     leftMarkerLockedToBearing = event.target.checked;
   });
+  
+  document.getElementById('lock-right-marker-to-bearing').addEventListener('change', (event) => {
+    rightMarkerLockedToBearing = event.target.checked;
+  });
+  
+  document.getElementById('lock-center-marker-to-bearing').addEventListener('change', (event) => {
+    centerMarkerLockedToBearing = event.target.checked;
+  });
 
   leftMapMarkerPosition = { lat: 37.778379, lng: -122.389711 } // Oracle Park, San Francisco, CA
   rightMapMarkerPosition = { lat: 36.014313, lng: -75.66791 } // Wright Brothers Memorial, Kill Devil Hills, NC
@@ -164,14 +172,17 @@ async function initMaps () {
   rightMarker.addListener('drag', debounce(() => markerMoved(rightMarker), 10))
 
   leftMarker.addListener('dragend', () => {
+    updateMarkers()
     clearSearchInput(leftMarker)
     centerMaps([leftMap])
   })
   centerMarker.addListener('dragend', () => {
+    updateMarkers()
     clearSearchInput(centerMarker)
     centerMaps([centerMap])
   })
   rightMarker.addListener('dragend', () => {
+    updateMarkers()
     clearSearchInput(rightMarker)
     centerMaps([rightMap])
   })
@@ -242,8 +253,21 @@ function debounce (func, wait) {
 }
 
 function centerMarkerMoved (centerMarker) {
-  const newPosition = centerMarker.getPosition().toJSON()
+  let newPosition = centerMarker.getPosition().toJSON()
 
+  if (centerMarkerLockedToBearing) {
+      
+    let adjustedPosition = adjustPositionToGeodesicLine(
+      newPosition,
+      leftMapMarkerPosition,
+      rightMapMarkerPosition
+    );
+
+    centerMapMarkerPosition.lat = adjustedPosition.lat
+    centerMapMarkerPosition.lng = adjustedPosition.lng
+
+  } else {
+    
   // Determine the target and opposite positions based on the locked marker
   const targetPosition = lockedMarker === 'right' ? leftMapMarkerPosition : rightMapMarkerPosition
   const oppositePosition = lockedMarker === 'right' ? rightMapMarkerPosition : leftMapMarkerPosition
@@ -281,16 +305,32 @@ function centerMarkerMoved (centerMarker) {
   updateMarkers();
   drawLines()
   centerMaps([lockedMarker === 'right' ? leftMap : rightMap])
+
+  }
 }
 
 function endpointMarkerMoved (movedMarker) {
-  const newPosition = movedMarker.getPosition().toJSON()
+  let newPosition = movedMarker.getPosition().toJSON()
 
   const movedMarkerPosition =
     movedMarker === leftMarker ? leftMapMarkerPosition : rightMapMarkerPosition
   const oppositeMarkerPosition =
     movedMarker === leftMarker ? rightMapMarkerPosition : leftMapMarkerPosition
 
+  if ((leftMarkerLockedToBearing && movedMarker === leftMarker) || (rightMarkerLockedToBearing && movedMarker === rightMarker)) {
+    let adjustedPosition = adjustPositionToGeodesicLine(
+      newPosition,
+      centerMapMarkerPosition,
+      movedMarker === leftMarker ? leftMapMarkerPosition : rightMapMarkerPosition
+    );
+
+    movedMarkerPosition.lat = adjustedPosition.lat
+    movedMarkerPosition.lng = adjustedPosition.lng
+
+    drawLines()
+
+  } else {
+    
   const oppositeMap = movedMarker === leftMarker ? rightMap : leftMap
 
   // Calculate the distance and bearing from the center marker to the new moved marker position
@@ -321,6 +361,8 @@ function endpointMarkerMoved (movedMarker) {
   updateMarkers();
   drawLines()
   centerMaps([oppositeMap])
+
+  }
 }
 
 function centerMaps (maps) {
@@ -367,6 +409,29 @@ function updateMarkers () {
   centerMarkers.forEach(marker => marker.setPosition(centerMapMarkerPosition))
   rightMarkers.forEach(marker => marker.setPosition(rightMapMarkerPosition))
 
+}
+
+function adjustPositionToGeodesicLine(draggedPosition, otherPosition1, otherPosition2) {
+  // Calculate the bearing between the other two points (this defines the geodesic line)
+  const bearing = google.maps.geometry.spherical.computeHeading(
+    new google.maps.LatLng(otherPosition1),
+    new google.maps.LatLng(otherPosition2)
+  );
+
+  // Calculate the distance from the first other point to the dragged position
+  const distance = google.maps.geometry.spherical.computeDistanceBetween(
+    new google.maps.LatLng(otherPosition1),
+    new google.maps.LatLng(draggedPosition)
+  );
+
+  // Calculate the new dragged position on the geodesic line using the bearing and distance
+  const adjustedPosition = google.maps.geometry.spherical.computeOffset(
+    new google.maps.LatLng(otherPosition1),
+    distance,
+    bearing
+  );
+
+  return { lat: adjustedPosition.lat(), lng: adjustedPosition.lng() };
 }
 
 function drawLines () {
