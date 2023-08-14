@@ -112,6 +112,10 @@ async function initMaps () {
     scale: 6 // You can adjust the size by changing the scale
   }
 
+  previewMarker = new google.maps.Marker({
+    icon: redCircleIcon
+  });
+
   // Create leftMarker on all three maps
   leftMarkers = [
     new Marker({ map: leftMap, title: 'Left Marker', draggable: true }),
@@ -455,16 +459,10 @@ function adjustPositionToGeodesicLine(draggedPosition, otherPosition1, otherPosi
 }
 
 function updatePreviewMarker(position, map) {
+  
+  previewMarker.setMap(map);
+  previewMarker.setPosition(position);
 
-  if (previewMarker) {
-    previewMarker.setMap(null);
-  }
-
-  previewMarker = new google.maps.Marker({
-    position,
-    icon: redCircleIcon,
-    map
-  });
 }
 
 
