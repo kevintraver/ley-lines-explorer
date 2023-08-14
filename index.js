@@ -141,15 +141,15 @@ async function initMaps () {
   rightMarker = rightMarkers[2]
 
   document.getElementById('left-recenter-button').addEventListener('click', () => {
-    leftMap.setCenter(leftMapMarkerPosition)
+    leftMap.panTo(leftMapMarkerPosition)
   })
 
   document.getElementById('center-recenter-button').addEventListener('click', () => {
-    centerMap.setCenter(centerMapMarkerPosition)
+    centerMap.panTo(centerMapMarkerPosition)
   })
 
   document.getElementById('right-recenter-button').addEventListener('click', () => {
-    rightMap.setCenter(rightMapMarkerPosition)
+    rightMap.panTo(rightMapMarkerPosition)
   })
 
   document.getElementById('lock-left-marker').addEventListener('change', () => {
