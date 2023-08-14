@@ -1,7 +1,3 @@
-Certainly! Below is a detailed README and specification for the given JavaScript and HTML code.
-
----
-
 # Ley Lines Explorer
 
 ## Overview
