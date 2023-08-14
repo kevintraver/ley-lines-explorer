@@ -330,10 +330,10 @@ function debounce(func, wait) {
 }
 
 function centerMarkerMoved(centerMarker) {
-  let newPosition = centerMarker.getPosition().toJSON()
+  const newPosition = centerMarker.getPosition().toJSON()
 
   if (centerMarkerLockedToBearing) {
-    let adjustedPosition = adjustPositionToGeodesicLine(
+    const adjustedPosition = adjustPositionToGeodesicLine(
       newPosition,
       leftMapMarkerPosition,
       rightMapMarkerPosition
@@ -387,7 +387,7 @@ function centerMarkerMoved(centerMarker) {
 }
 
 function endpointMarkerMoved(movedMarker) {
-  let newPosition = movedMarker.getPosition().toJSON()
+  const newPosition = movedMarker.getPosition().toJSON()
 
   const movedMarkerPosition =
     movedMarker === leftMarker ? leftMapMarkerPosition : rightMapMarkerPosition
@@ -398,7 +398,7 @@ function endpointMarkerMoved(movedMarker) {
     (leftMarkerLockedToBearing && movedMarker === leftMarker) ||
     (rightMarkerLockedToBearing && movedMarker === rightMarker)
   ) {
-    let adjustedPosition = adjustPositionToGeodesicLine(
+    const adjustedPosition = adjustPositionToGeodesicLine(
       newPosition,
       centerMapMarkerPosition,
       movedMarker === leftMarker
