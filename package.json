@@ -60,6 +60,7 @@
     "eslint": "^8.47.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
+    "htmlhint": "^1.1.4",
     "prettier": "^3.0.1"
   },
   "scripts": {
