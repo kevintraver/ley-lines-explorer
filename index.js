@@ -35,7 +35,7 @@ async function initMaps () {
   lockedMarker = 'right'
 
   leftMarkerLockedToBearing = true;
-  centerMarkerLockedToBearing = false;
+  centerMarkerLockedToBearing = true;
   rightMarkerLockedToBearing = false;
 
   const leftSearchBox = new google.maps.places.SearchBox(
