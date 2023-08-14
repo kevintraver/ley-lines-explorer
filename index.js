@@ -403,12 +403,21 @@ function fitMapToBounds (map, viewport) {
   }
 }
 
-function updateMarkers () {
+function updateMarkers(...markerCollections) {
+  // If no arguments are provided, default to updating all markers
+  if (markerCollections.length === 0) {
+    markerCollections = [leftMarkers, centerMarkers, rightMarkers];
+  }
 
-  leftMarkers.forEach(marker => marker.setPosition(leftMapMarkerPosition))
-  centerMarkers.forEach(marker => marker.setPosition(centerMapMarkerPosition))
-  rightMarkers.forEach(marker => marker.setPosition(rightMapMarkerPosition))
+  markerCollections.forEach(collection => {
+    const position = collection === leftMarkers ? leftMapMarkerPosition :
+                     collection === centerMarkers ? centerMapMarkerPosition :
+                     collection === rightMarkers ? rightMapMarkerPosition : null;
 
+    if (position) {
+      collection.forEach(marker => marker.setPosition(position));
+    }
+  });
 }
 
 function adjustPositionToGeodesicLine(draggedPosition, otherPosition1, otherPosition2) {
