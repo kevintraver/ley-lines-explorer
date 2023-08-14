@@ -46,6 +46,7 @@ async function initMaps () {
     if (places.length === 0) return
     const location = places[0].geometry.location
     const viewport = places[0].geometry.viewport
+    unsetLockToLines()
     leftMapMarkerPosition = { lat: location.lat(), lng: location.lng() }
     leftMarker.setPosition(leftMapMarkerPosition)
     markerMoved(leftMarker)
@@ -61,6 +62,7 @@ async function initMaps () {
     if (places.length === 0) return
     const location = places[0].geometry.location
     const viewport = places[0].geometry.viewport
+    unsetLockToLines()
     centerMapMarkerPosition = { lat: location.lat(), lng: location.lng() }
     centerMarker.setPosition(centerMapMarkerPosition)
     markerMoved(centerMarker) // Trigger markerMoved function for centerMarker
@@ -76,6 +78,7 @@ async function initMaps () {
     if (places.length === 0) return
     const location = places[0].geometry.location
     const viewport = places[0].geometry.viewport
+    unsetLockToLines()
     rightMapMarkerPosition = { lat: location.lat(), lng: location.lng() }
     rightMarker.setPosition(rightMapMarkerPosition)
     markerMoved(rightMarker)
@@ -467,6 +470,15 @@ function updatePreviewMarker(position, map) {
   previewMarker.setMap(map);
   previewMarker.setPosition(position);
 
+}
+
+function unsetLockToLines() {
+  leftMarkerLockedToBearing = false;
+  centerMarkerLockedToBearing = false;
+  rightMarkerLockedToBearing = false;
+  document.getElementById('lock-left-marker-to-bearing').checked = false
+  document.getElementById('lock-center-marker-to-bearing').checked = false
+  document.getElementById('lock-right-marker-to-bearing').checked = false
 }
 
 
