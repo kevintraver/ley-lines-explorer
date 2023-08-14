@@ -99,7 +99,7 @@ async function initMaps () {
     mapId: 'RIGHT_MAP'
   })
 
-  const redSvgMarker = {
+  const redCircleIcon = {
     path: google.maps.SymbolPath.CIRCLE,
     fillColor: 'red',
     fillOpacity: 1.0,
@@ -111,23 +111,23 @@ async function initMaps () {
   // Create leftMarker on all three maps
   leftMarkers = [
     new Marker({ map: leftMap, title: 'Left Marker', draggable: true }),
-    new Marker({ map: centerMap, title: 'Left Marker', draggable: false, icon: redSvgMarker }),
-    new Marker({ map: rightMap, title: 'Left Marker', draggable: false, icon: redSvgMarker })
+    new Marker({ map: centerMap, title: 'Left Marker', draggable: false, icon: redCircleIcon }),
+    new Marker({ map: rightMap, title: 'Left Marker', draggable: false, icon: redCircleIcon })
   ]
   leftMarker = leftMarkers[0]
 
   // Create centerMarker on all three maps
   centerMarkers = [
-    new Marker({ map: leftMap, title: 'Center Marker', draggable: false, icon: redSvgMarker }),
+    new Marker({ map: leftMap, title: 'Center Marker', draggable: false, icon: redCircleIcon }),
     new Marker({ map: centerMap, title: 'Center Marker', draggable: true }),
-    new Marker({ map: rightMap, title: 'Center Marker', draggable: false, icon: redSvgMarker })
+    new Marker({ map: rightMap, title: 'Center Marker', draggable: false, icon: redCircleIcon })
   ]
   centerMarker = centerMarkers[1]
 
   // Create rightMarker on all three maps
   rightMarkers = [
-    new Marker({ map: leftMap, title: 'Right Marker', draggable: false, icon: redSvgMarker }),
-    new Marker({ map: centerMap, title: 'Right Marker', draggable: false, icon: redSvgMarker }),
+    new Marker({ map: leftMap, title: 'Right Marker', draggable: false, icon: redCircleIcon }),
+    new Marker({ map: centerMap, title: 'Right Marker', draggable: false, icon: redCircleIcon }),
     new Marker({ map: rightMap, title: 'Right Marker', draggable: true })
   ]
   rightMarker = rightMarkers[2]
