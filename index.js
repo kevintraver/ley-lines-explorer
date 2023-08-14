@@ -27,12 +27,16 @@ let redCircleIcon;
 // variable to track which marker is locked
 let lockedMarker
 
-let leftMarkerLockedToBearing = false;
-let centerMarkerLockedToBearing = false;
-let rightMarkerLockedToBearing = false;
+let leftMarkerLockedToBearing;
+let centerMarkerLockedToBearing;
+let rightMarkerLockedToBearing;
 
 async function initMaps () {
   lockedMarker = 'right'
+
+  leftMarkerLockedToBearing = true;
+  centerMarkerLockedToBearing = false;
+  rightMarkerLockedToBearing = false;
 
   const leftSearchBox = new google.maps.places.SearchBox(
     document.getElementById('left-search-input')
