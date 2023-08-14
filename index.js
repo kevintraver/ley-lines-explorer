@@ -176,6 +176,7 @@ async function initMaps () {
   
   document.getElementById('lock-center-marker-to-bearing').addEventListener('change', (event) => {
     centerMarkerLockedToBearing = event.target.checked;
+    toggleMoveRadioButtons(centerMarkerLockedToBearing);
   });
 
   leftMapMarkerPosition = { lat: 37.778379, lng: -122.389711 } // Oracle Park, San Francisco, CA
@@ -191,6 +192,8 @@ async function initMaps () {
     updateMarkers()
     clearSearchInput(leftMarker)
     centerMaps([leftMap])
+    lockedMarker = 'right';
+    document.getElementById('lock-right-marker').checked = true;
   })
   centerMarker.addListener('dragend', () => {
     if (previewMarker) previewMarker.setMap(null);
@@ -203,6 +206,8 @@ async function initMaps () {
     updateMarkers()
     clearSearchInput(rightMarker)
     centerMaps([rightMap])
+    lockedMarker = 'left';
+    document.getElementById('lock-left-marker').checked = true;
   })
 
   updateMarkers();
@@ -471,6 +476,12 @@ function updatePreviewMarker(position, map) {
   previewMarker.setPosition(position);
 
 }
+
+function toggleMoveRadioButtons(disabled) {
+  document.getElementById('lock-right-marker').disabled = disabled;
+  document.getElementById('lock-left-marker').disabled = disabled;
+}
+
 
 function unsetLockToLines() {
   leftMarkerLockedToBearing = false;
