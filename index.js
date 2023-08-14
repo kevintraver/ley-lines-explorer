@@ -247,8 +247,6 @@ function debounce (func, wait) {
 
 function centerMarkerMoved (centerMarker) {
   const newPosition = centerMarker.getPosition().toJSON()
-  centerMapMarkerPosition.lat = newPosition.lat
-  centerMapMarkerPosition.lng = newPosition.lng
 
   // Determine the target and opposite positions based on the locked marker
   const targetPosition = lockedMarker === 'right' ? leftMapMarkerPosition : rightMapMarkerPosition
@@ -271,6 +269,9 @@ function centerMarkerMoved (centerMarker) {
     bearing + 180
   )
 
+  centerMapMarkerPosition.lat = newPosition.lat
+  centerMapMarkerPosition.lng = newPosition.lng
+
   // Update the global position objects based on the locked marker
   if (lockedMarker === 'right') {
     leftMapMarkerPosition.lat = oppositeLatLng.lat()
@@ -288,15 +289,14 @@ function centerMarkerMoved (centerMarker) {
 }
 
 function endpointMarkerMoved (movedMarker) {
+  const newPosition = movedMarker.getPosition().toJSON()
+
   const movedMarkerPosition =
     movedMarker === leftMarker ? leftMapMarkerPosition : rightMapMarkerPosition
   const oppositeMarkerPosition =
     movedMarker === leftMarker ? rightMapMarkerPosition : leftMapMarkerPosition
 
   const oppositeMap = movedMarker === leftMarker ? rightMap : leftMap
-
-  // Get the current position of the moved marker
-  const newPosition = movedMarker.getPosition().toJSON()
 
   // Calculate the distance and bearing from the center marker to the new moved marker position
   const distance = google.maps.geometry.spherical.computeDistanceBetween(
