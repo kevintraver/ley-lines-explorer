@@ -214,7 +214,6 @@ function drawGeodesicLine (start, end, map) {
     path: pathLonger,
     geodesic: true,
     map,
-    strokeWeight: 3,
     strokeOpacity: 0.33
   })
 
