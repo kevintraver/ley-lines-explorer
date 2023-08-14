@@ -20,6 +20,10 @@ let leftMarker
 let centerMarker
 let rightMarker
 
+let previewMarker;
+
+let redCircleIcon;
+
 // variable to track which marker is locked
 let lockedMarker
 
@@ -99,7 +103,7 @@ async function initMaps () {
     mapId: 'RIGHT_MAP'
   })
 
-  const redCircleIcon = {
+  redCircleIcon = {
     path: google.maps.SymbolPath.CIRCLE,
     fillColor: 'red',
     fillOpacity: 1.0,
@@ -172,16 +176,19 @@ async function initMaps () {
   rightMarker.addListener('drag', debounce(() => markerMoved(rightMarker), 10))
 
   leftMarker.addListener('dragend', () => {
+    if (previewMarker) previewMarker.setMap(null);
     updateMarkers()
     clearSearchInput(leftMarker)
     centerMaps([leftMap])
   })
   centerMarker.addListener('dragend', () => {
+    if (previewMarker) previewMarker.setMap(null);
     updateMarkers()
     clearSearchInput(centerMarker)
     centerMaps([centerMap])
   })
   rightMarker.addListener('dragend', () => {
+    if (previewMarker) previewMarker.setMap(null);
     updateMarkers()
     clearSearchInput(rightMarker)
     centerMaps([rightMap])
@@ -262,6 +269,8 @@ function centerMarkerMoved (centerMarker) {
       leftMapMarkerPosition,
       rightMapMarkerPosition
     );
+    
+    updatePreviewMarker(adjustedPosition, centerMap);
 
     centerMapMarkerPosition.lat = adjustedPosition.lat
     centerMapMarkerPosition.lng = adjustedPosition.lng
@@ -323,6 +332,8 @@ function endpointMarkerMoved (movedMarker) {
       centerMapMarkerPosition,
       movedMarker === leftMarker ? leftMapMarkerPosition : rightMapMarkerPosition
     );
+    
+    updatePreviewMarker(adjustedPosition, movedMarker === leftMarker ? leftMap : rightMap);
 
     movedMarkerPosition.lat = adjustedPosition.lat
     movedMarkerPosition.lng = adjustedPosition.lng
@@ -442,6 +453,20 @@ function adjustPositionToGeodesicLine(draggedPosition, otherPosition1, otherPosi
 
   return { lat: adjustedPosition.lat(), lng: adjustedPosition.lng() };
 }
+
+function updatePreviewMarker(position, map) {
+
+  if (previewMarker) {
+    previewMarker.setMap(null);
+  }
+
+  previewMarker = new google.maps.Marker({
+    position,
+    icon: redCircleIcon,
+    map
+  });
+}
+
 
 function drawLines () {
   polylines.forEach((polyline) => polyline.setMap(null))
