@@ -23,6 +23,10 @@ let rightMarker
 // variable to track which marker is locked
 let lockedMarker
 
+let leftMarkerLockedToBearing = false;
+let centerMarkerLockedToBearing = false;
+let rightMarkerLockedToBearing = false;
+
 async function initMaps () {
   lockedMarker = 'right'
 
@@ -146,6 +150,10 @@ async function initMaps () {
   document.getElementById('lock-right-marker').addEventListener('change', () => {
     lockedMarker = 'right'
   })
+  
+  document.getElementById('lock-left-marker-to-bearing').addEventListener('change', (event) => {
+    leftMarkerLockedToBearing = event.target.checked;
+  });
 
   leftMapMarkerPosition = { lat: 37.778379, lng: -122.389711 } // Oracle Park, San Francisco, CA
   rightMapMarkerPosition = { lat: 36.014313, lng: -75.66791 } // Wright Brothers Memorial, Kill Devil Hills, NC
