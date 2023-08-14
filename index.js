@@ -176,12 +176,9 @@ async function initMaps () {
     centerMaps([rightMap])
   })
 
-  // Recenter on the placemarks
-  leftMap.setCenter(leftMapMarkerPosition)
-  centerMap.setCenter(centerMapMarkerPosition)
-  rightMap.setCenter(rightMapMarkerPosition)
-
-  updateMaps()
+  updateMarkers();
+  drawLines()
+  centerMaps([leftMap, centerMap, rightMap])
 }
 
 function drawGeodesicLine (start, end, map) {
@@ -282,9 +279,8 @@ function centerMarkerMoved (centerMarker) {
   }
 
   // Update the maps
-  updateMaps()
-
-  // Center the map on the opposite marker that has been moved
+  updateMarkers();
+  drawLines()
   centerMaps([lockedMarker === 'right' ? leftMap : rightMap])
 }
 
@@ -323,7 +319,8 @@ function endpointMarkerMoved (movedMarker) {
   oppositeMarkerPosition.lng = oppositeLatLng.lng()
 
   // Update the maps
-  updateMaps()
+  updateMarkers();
+  drawLines()
   centerMaps([oppositeMap])
 }
 
@@ -365,14 +362,17 @@ function fitMapToBounds (map, viewport) {
   }
 }
 
-function updateMaps () {
-  polylines.forEach((polyline) => polyline.setMap(null))
-  polylines = []
+function updateMarkers () {
 
-  // Update the placemarks on all three maps
   leftMarkers.forEach(marker => marker.setPosition(leftMapMarkerPosition))
   centerMarkers.forEach(marker => marker.setPosition(centerMapMarkerPosition))
   rightMarkers.forEach(marker => marker.setPosition(rightMapMarkerPosition))
+
+}
+
+function drawLines () {
+  polylines.forEach((polyline) => polyline.setMap(null))
+  polylines = []
 
   // Draw the new geodesic lines on all three maps and store them
   polylines.push(...drawGeodesicLine(leftMapMarkerPosition, rightMapMarkerPosition, leftMap))
