@@ -4,44 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ley Lines Explorer</title>
-    <link rel="stylesheet" href="style.css" />
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.3/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <script type="module" src="index.js"></script>
   </head>
-  <body>
-    <div class="panel">
-      <div class="placeholder"></div>
-      <button id="left-recenter-button">Recenter</button>
-      <input
-        type="text"
-        id="left-search-input"
-        class="search-input"
-        placeholder="Search..."
-      />
-      <label for="lock-left-marker-to-bearing">Lock Placemark To Line</label>
-      <input type="checkbox" id="lock-left-marker-to-bearing">
-      <div id="left-map" class="map-panel"></div>
-    </div>
-    <!-- Center panel with search and map -->
-    <div class="panel">
-      <button id="center-recenter-button">Recenter</button>
-      <input
-        type="text"
-        id="center-search-input"
-        class="search-input"
-        placeholder="Search..."
-      />
-      <div class="lock-controls">
-        <label for="lock-left-marker">Lock Left Marker</label>
+  <body class="bg-gray-100 h-screen flex flex-col p-8">
+    <!-- Controls Row -->
+    <div class="grid grid-cols-3 gap-4 mb-4">
+      <div class="lock-controls flex items-center justify-center space-x-4">
+        <label for="lock-left-marker-to-bearing">Lock To Line</label>
+        <input type="checkbox" id="lock-left-marker-to-bearing">
+      </div>
+      <div class="lock-controls flex items-center justify-center space-x-4">
+        <label for="lock-left-marker" class="mr-2">Lock Left</label>
         <input
           type="radio"
           id="lock-left-marker"
           name="lock-marker"
           value="left"
         />
-        <label for="lock-center-marker-to-bearing">Lock Placemark To Line</label>
+        <label for="lock-center-marker-to-bearing" class="mr-2">Lock To Line</label>
         <input type="checkbox" id="lock-center-marker-to-bearing">
-        <label for="lock-right-marker">Lock Right Marker</label>
+        <label for="lock-right-marker" class="mr-2">Lock Right</label>
         <input
           type="radio"
           id="lock-right-marker"
@@ -50,26 +34,50 @@
           checked
         />
       </div>
-      <div id="center-map" class="map-panel"></div>
+      <div class="lock-controls flex items-center justify-center space-x-4">
+        <label for="lock-right-marker-to-bearing">Lock To Line</label>
+        <input type="checkbox" id="lock-right-marker-to-bearing">
+      </div>
     </div>
-    <!-- Right panel with search and map -->
-    <div class="panel">
-      <div class="placeholder"></div>
-      <button id="right-recenter-button">Recenter</button>
-      <input
-        type="text"
-        id="right-search-input"
-        class="search-input"
-        placeholder="Search..."
-      />
-      <label for="lock-right-marker-to-bearing">Lock Placemark To Line</label>
-      <input type="checkbox" id="lock-right-marker-to-bearing">
-      <div id="right-map" class="map-panel"></div>
+    <!-- Maps and Buttons Row -->
+    <div class="grid grid-cols-3 gap-4 flex-grow">
+      <div class="flex flex-col items-center justify-between">
+        <div id="left-map" class="map-panel w-full h-full mb-4"></div>
+        <div class="flex w-full items-center">
+          <input
+            type="text"
+            id="left-search-input"
+            class="search-input p-2 border border-gray-300 flex-grow mr-2"
+            placeholder="Search..."
+          />
+          <button id="left-recenter-button" class="bg-blue-500 text-white px-2 py-1">Recenter</button>
+        </div>
+      </div>
+      <div class="flex flex-col items-center justify-between">
+        <div id="center-map" class="map-panel w-full h-full mb-4"></div>
+        <div class="flex w-full items-center">
+          <input
+            type="text"
+            id="center-search-input"
+            class="search-input p-2 border border-gray-300 flex-grow mr-2"
+            placeholder="Search..."
+          />
+          <button id="center-recenter-button" class="bg-blue-500 text-white px-2 py-1">Recenter</button>
+        </div>
+      </div>
+      <div class="flex flex-col items-center justify-between">
+        <div id="right-map" class="map-panel w-full h-full mb-4"></div>
+        <div class="flex w-full items-center">
+          <input
+            type="text"
+            id="right-search-input"
+            class="search-input p-2 border border-gray-300 flex-grow mr-2"
+            placeholder="Search..."
+          />
+          <button id="right-recenter-button" class="bg-blue-500 text-white px-2 py-1">Recenter</button>
+        </div>
+      </div>
     </div>
-
-    <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQuEooVMj9FEZyRp-f-AuFbC5TMMqxkc8&libraries=geometry,places&callback=initMaps"
-      defer
-    ></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJQ4fBeviB1DsamC9NtoMLjnvML4dYd3w&libraries=geometry,places&callback=initMaps" defer ></script>
   </body>
 </html>
