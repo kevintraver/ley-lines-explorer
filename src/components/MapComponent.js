@@ -1,3 +1,6 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faExpand } from "@fortawesome/free-solid-svg-icons";
+
 import React, { useState } from "react";
 import {
   GoogleMap,
@@ -97,10 +100,10 @@ function MapComponent() {
       libraries={["places", "geometry"]}
     >
       <button
-        className="absolute top-6 left-6 z-10 bg-white px-4 py-2 border border-gray-300 rounded cursor-pointer"
+        className="absolute top-8 left-8 z-10 bg-white px-4 h-8 flex items-center border border-gray-300 rounded cursor-pointer"
         onClick={() => fitBoundsToMarkers(map)}
       >
-        Reset View
+        <FontAwesomeIcon icon={faExpand} />
       </button>
 
       <SearchComponent onPlaceSelected={handlePlaceSelected} />
