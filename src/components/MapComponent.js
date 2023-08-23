@@ -12,6 +12,8 @@ const mapContainerStyle = {
   width: "100%"
 };
 
+const initialMapZoom = 4;
+
 const initialCenterCoordinates = {
   lat: 39.0853,
   lng: -94.5851
@@ -30,7 +32,7 @@ const initialMarker2Position = {
 };
 
 const options = {
-  zoom: 4,
+  zoom: initialMapZoom,
   streetViewControl: false,
   fullscreenControl: false,
   mapTypeId: "hybrid",
@@ -64,6 +66,7 @@ function MapComponent() {
     >
       <SearchComponent onPlaceSelected={handlePlaceSelected} />
       <GoogleMap
+        zoom={initialMapZoom}
         mapContainerStyle={mapContainerStyle}
         options={options}
         center={mapCenter}
