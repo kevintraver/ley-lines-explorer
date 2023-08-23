@@ -78,7 +78,7 @@ function MapComponent() {
   return (
     <LoadScript
       googleMapsApiKey="AIzaSyCg3GhYlgSqmae3ql20SCuQoMhr90bUyD8"
-      libraries={["places"]}
+      libraries={["places", "geometry"]}
     >
       <button
         className="absolute top-6 left-6 z-10 bg-white px-4 py-2 border border-gray-300 rounded cursor-pointer"
