@@ -60,7 +60,7 @@ function MapComponent() {
 
   const [map, setMap] = React.useState(null);
 
-  const computeClosestPointAndMidpoint = (point) => {
+  function computeClosestPointAndMidpoint(point) {
     const bearing = window.google.maps.geometry.spherical.computeHeading(
       new window.google.maps.LatLng(marker1Position),
       new window.google.maps.LatLng(marker2Position)
@@ -100,7 +100,7 @@ function MapComponent() {
         lng: adjustedPosition.lng()
       }
     };
-  };
+  }
 
   const onLoad = React.useCallback(function callback(map) {
     fitBoundsToMarkers(map);
@@ -143,7 +143,7 @@ function MapComponent() {
     initialMarker2Position
   );
 
-  const handlePlaceSelected = (place) => {
+  function handlePlaceSelected(place) {
     setSelectedPlacePosition({
       lat: place.geometry.location.lat(),
       lng: place.geometry.location.lng()
@@ -166,7 +166,7 @@ function MapComponent() {
 
     // Adjust the map to fit these bounds
     map.fitBounds(bounds);
-  };
+  }
 
   return (
     <LoadScript
