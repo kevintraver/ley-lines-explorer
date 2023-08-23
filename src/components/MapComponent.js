@@ -1,11 +1,12 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExpand } from "@fortawesome/free-solid-svg-icons";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   GoogleMap,
   LoadScript,
   Marker,
+  OverlayView,
   Polyline
 } from "@react-google-maps/api";
 import SearchComponent from "./SearchComponent";
@@ -13,6 +14,21 @@ import SearchComponent from "./SearchComponent";
 const mapContainerStyle = {
   height: "700px",
   width: "100%"
+};
+
+const userLocale = window.navigator.language;
+
+// Format the distance based on the user's locale
+const formatDistance = (distanceInMeters) => {
+  if (["en-US", "en-GB"].includes(userLocale)) {
+    // Use miles for US & UK
+    const miles = distanceInMeters * 0.000621371;
+    return `${miles.toFixed(2)} miles`;
+  } else {
+    // Use kilometers for other countries
+    const kilometers = distanceInMeters / 1000;
+    return `${kilometers.toFixed(2)} km`;
+  }
 };
 
 const initialMapZoom = 4;
@@ -39,8 +55,52 @@ const options = {
 
 function MapComponent() {
   const [selectedPlacePosition, setSelectedPlacePosition] = useState(null);
+  const [distanceToPath, setDistanceToPath] = useState(null);
+  const [midpointOfLine, setMidpointOfLine] = useState(null);
 
   const [map, setMap] = React.useState(null);
+
+  const computeClosestPointAndMidpoint = (point) => {
+    const bearing = window.google.maps.geometry.spherical.computeHeading(
+      new window.google.maps.LatLng(marker1Position),
+      new window.google.maps.LatLng(marker2Position)
+    );
+
+    const distance =
+      window.google.maps.geometry.spherical.computeDistanceBetween(
+        new window.google.maps.LatLng(marker1Position),
+        new window.google.maps.LatLng(point)
+      );
+
+    const adjustedPosition =
+      window.google.maps.geometry.spherical.computeOffset(
+        new window.google.maps.LatLng(marker1Position),
+        distance,
+        bearing
+      );
+
+    const distanceToAdjustedPosition =
+      window.google.maps.geometry.spherical.computeDistanceBetween(
+        new window.google.maps.LatLng(point),
+        adjustedPosition
+      );
+
+    const midpoint = window.google.maps.geometry.spherical.interpolate(
+      new window.google.maps.LatLng(point),
+      adjustedPosition,
+      0.5
+    );
+
+    setDistanceToPath(distanceToAdjustedPosition);
+    setMidpointOfLine(midpoint);
+
+    return {
+      adjustedPosition: {
+        lat: adjustedPosition.lat(),
+        lng: adjustedPosition.lng()
+      }
+    };
+  };
 
   const onLoad = React.useCallback(function callback(map) {
     fitBoundsToMarkers(map);
@@ -74,6 +134,7 @@ function MapComponent() {
 
   const [pathShortest, setPathShortest] = useState([]);
   const [pathLongest, setPathLongest] = useState([]);
+  const [lineToClosestPoint, setLineToClosestPoint] = useState([]);
 
   const [marker1Position, setMarker1Position] = useState(
     initialMarker1Position
@@ -81,6 +142,15 @@ function MapComponent() {
   const [marker2Position, setMarker2Position] = useState(
     initialMarker2Position
   );
+
+  useEffect(() => {
+    if (selectedPlacePosition) {
+      const { adjustedPosition } = computeClosestPointAndMidpoint(
+        selectedPlacePosition
+      );
+      setLineToClosestPoint([selectedPlacePosition, adjustedPosition]);
+    }
+  }, [selectedPlacePosition]);
 
   const handlePlaceSelected = (place) => {
     setSelectedPlacePosition({
@@ -160,6 +230,23 @@ function MapComponent() {
           />
         )}
 
+        <Polyline
+          path={lineToClosestPoint}
+          options={{
+            strokeColor: "#00f",
+            strokeWeight: 2
+          }}
+        />
+        {midpointOfLine && (
+          <OverlayView
+            position={{ lat: midpointOfLine.lat(), lng: midpointOfLine.lng() }}
+            mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+          >
+            <div className="p-2 rounded shadow-md">
+              {formatDistance(distanceToPath)}
+            </div>
+          </OverlayView>
+        )}
         <Polyline
           path={pathShortest}
           options={{
