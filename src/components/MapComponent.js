@@ -41,6 +41,7 @@ function MapComponent() {
 
   const onLoad = React.useCallback(function callback(map) {
     fitBoundsToMarkers(map);
+    updatePathsBasedOnMarkers(marker1Position, marker2Position);
     setMap(map);
   }, []);
 
@@ -51,10 +52,25 @@ function MapComponent() {
     map.fitBounds(bounds);
   };
 
-  const [pathShortest, setPathShortest] = useState([
-    initialMarker1Position,
-    initialMarker2Position
-  ]);
+  const updatePathsBasedOnMarkers = (pointA, pointB) => {
+    // eslint-disable-next-line new-cap
+    const midpoint = new window.google.maps.geometry.spherical.interpolate(
+      new window.google.maps.LatLng(pointA),
+      new window.google.maps.LatLng(pointB),
+      0.5
+    );
+
+    const antipodalMidpoint = {
+      lat: -midpoint.lat(),
+      lng: (midpoint.lng() + 180) % 360
+    };
+
+    setPathShortest([pointA, pointB]);
+    setPathLongest([pointA, antipodalMidpoint, pointB]);
+  };
+
+  const [pathShortest, setPathShortest] = useState([]);
+  const [pathLongest, setPathLongest] = useState([]);
 
   const [marker1Position, setMarker1Position] = useState(
     initialMarker1Position
@@ -96,10 +112,11 @@ function MapComponent() {
         <Marker
           position={marker1Position}
           onDrag={(event) => {
-            setPathShortest((prevPath) => [
-              { lat: event.latLng.lat(), lng: event.latLng.lng() },
-              prevPath[1]
-            ]);
+            const newMarker1Position = {
+              lat: event.latLng.lat(),
+              lng: event.latLng.lng()
+            };
+            updatePathsBasedOnMarkers(newMarker1Position, marker2Position);
           }}
           draggable={true}
           onDragEnd={(event) => {
@@ -113,10 +130,11 @@ function MapComponent() {
           position={marker2Position}
           draggable={true}
           onDrag={(event) => {
-            setPathShortest((prevPath) => [
-              prevPath[0],
-              { lat: event.latLng.lat(), lng: event.latLng.lng() }
-            ]);
+            const newMarker2Position = {
+              lat: event.latLng.lat(),
+              lng: event.latLng.lng()
+            };
+            updatePathsBasedOnMarkers(marker1Position, newMarker2Position);
           }}
           onDragEnd={(event) => {
             setMarker2Position({
@@ -142,8 +160,14 @@ function MapComponent() {
         <Polyline
           path={pathShortest}
           options={{
+            geodesic: true
+          }}
+        />
+        <Polyline
+          path={pathLongest}
+          options={{
             geodesic: true,
-            strokeWeight: 2
+            strokeOpacity: 0.33
           }}
         />
       </GoogleMap>
