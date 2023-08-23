@@ -60,7 +60,12 @@ function Map() {
       >
         <Controls></Controls>
         <Search />
-        <Path pointA={pointA} pointB={pointB}></Path>
+        <Path
+          pointA={pointA}
+          pointB={pointB}
+          updatePointA={setPointA}
+          updatePointB={setPointB}
+        ></Path>
       </GoogleMap>
     </LoadScript>
   );

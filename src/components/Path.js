@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Marker, Polyline } from "@react-google-maps/api";
 
-function Path({ pointA, pointB }) {
+function Path({ pointA, pointB, ...props }) {
   const [pathShortest, setPathShortest] = useState([]);
   const [pathLongest, setPathLongest] = useState([]);
 
@@ -19,15 +19,20 @@ function Path({ pointA, pointB }) {
 
     setPathShortest([pointA, pointB]);
     setPathLongest([pointA, antipodalMidpoint, pointB]);
-  }, []);
+  }, [pointA, pointB]);
 
   return (
     <>
       <Marker
         position={pointA}
-        onDrag={(event) => {}}
         draggable={true}
-        onDragEnd={(event) => {}}
+        onDrag={(event) => {
+          const newPointA = {
+            lat: event.latLng.lat(),
+            lng: event.latLng.lng()
+          };
+          props.updatePointA(newPointA);
+        }}
       />
       <Polyline
         path={pathShortest}
@@ -37,9 +42,15 @@ function Path({ pointA, pointB }) {
       />
 
       <Marker
-        position={{ lat: 36.0183, lng: -75.6671 }}
+        position={pointB}
         draggable={true}
-        onDragEnd={(event) => {}}
+        onDrag={(event) => {
+          const newPointB = {
+            lat: event.latLng.lat(),
+            lng: event.latLng.lng()
+          };
+          props.updatePointB(newPointB);
+        }}
       />
       <Polyline
         path={pathLongest}
