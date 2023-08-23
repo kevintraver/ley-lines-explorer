@@ -38,7 +38,7 @@ const options = {
   center: initialCenterCoordinates,
 };
 
-function App() {
+function MapComponent() {
   const [mapCenter, setMapCenter] = useState(initialCenterCoordinates);
 
   const [marker1Position, setMarker1Position] = useState(
@@ -99,4 +99,4 @@ function App() {
   );
 }
 
-export default App;
+export default MapComponent;
