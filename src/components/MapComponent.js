@@ -171,19 +171,18 @@ function MapComponent() {
       googleMapsApiKey="AIzaSyCg3GhYlgSqmae3ql20SCuQoMhr90bUyD8"
       libraries={["places", "geometry"]}
     >
-      <button
-        className="absolute top-8 left-8 z-10 bg-white px-4 h-8 flex items-center border border-gray-300 rounded cursor-pointer"
-        onClick={() => fitBoundsToMarkers(map)}
-      >
-        <FontAwesomeIcon icon={faExpand} />
-      </button>
-
-      <SearchComponent onPlaceSelected={handlePlaceSelected} />
       <GoogleMap
         mapContainerStyle={mapContainerStyle}
         options={options}
         onLoad={onLoad}
       >
+        <button
+          className="absolute top-4 left-8 z-10 bg-white px-4 h-8 flex items-center border border-gray-300 rounded cursor-pointer"
+          onClick={() => fitBoundsToMarkers(map)}
+        >
+          <FontAwesomeIcon icon={faExpand} />
+        </button>
+        <SearchComponent onPlaceSelected={handlePlaceSelected} />
         <Marker
           position={marker1Position}
           onDrag={(event) => {
