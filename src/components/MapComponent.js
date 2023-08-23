@@ -3,6 +3,7 @@ import {
   GoogleMap,
   LoadScript,
   Marker,
+  Polyline,
 } from "@react-google-maps/api";
 import SearchComponent from "./SearchComponent";
 
@@ -84,6 +85,13 @@ function App() {
               lat: event.latLng.lat(),
               lng: event.latLng.lng(),
             });
+          }}
+        />
+        <Polyline
+          path={[marker1Position, marker2Position]}
+          options={{
+            geodesic: true,
+            strokeWeight: 2,
           }}
         />
       </GoogleMap>
