@@ -61,8 +61,12 @@ function MapComponent() {
     initialMarker2Position
   );
 
-  const handlePlaceSelected = (location) => {
-    setMapCenter({ lat: location.lat(), lng: location.lng() });
+  const handlePlaceSelected = (place) => {
+    if (place.geometry && place.geometry.viewport) {
+      map.fitBounds(place.geometry.viewport);
+    } else if (place.geometry && place.geometry.location) {
+      map.setCenter(place.geometry.location);
+    }
   };
 
   return (

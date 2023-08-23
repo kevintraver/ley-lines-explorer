@@ -12,7 +12,7 @@ function SearchComponent({ onPlaceSelected }) {
     if (searchBoxRef.current) {
       const places = searchBoxRef.current.getPlaces();
       if (places.length === 0) return;
-      onPlaceSelected(places[0].geometry.location);
+      onPlaceSelected(places[0]);
     }
   }, [onPlaceSelected]);
 
