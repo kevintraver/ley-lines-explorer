@@ -52,10 +52,6 @@ function MapComponent() {
     setMapCenter({ lat: location.lat(), lng: location.lng() });
   };
 
-  const onLoad = (marker) => {
-    console.log("marker: ", marker);
-  };
-
   return (
     <LoadScript
       googleMapsApiKey="AIzaSyCg3GhYlgSqmae3ql20SCuQoMhr90bUyD8"
