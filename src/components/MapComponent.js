@@ -227,7 +227,7 @@ function MapComponent() {
             icon={{
               path: window.google.maps.SymbolPath.CIRCLE,
               scale: 7,
-              fillColor: "#0000FF",
+              fillColor: "#FF0000",
               fillOpacity: 0.8,
               strokeWeight: 0
             }}
@@ -237,8 +237,7 @@ function MapComponent() {
         <Polyline
           path={lineToClosestPoint}
           options={{
-            strokeColor: "#00f",
-            strokeWeight: 2
+            strokeOpacity: 0.5
           }}
         />
         {midpointOfLine && (
