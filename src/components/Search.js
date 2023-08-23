@@ -1,7 +1,7 @@
 import React, { useRef, useCallback } from "react";
 import { StandaloneSearchBox } from "@react-google-maps/api";
 
-function SearchComponent({ onPlaceSelected }) {
+function Search({ onPlaceSelected }) {
   const searchBoxRef = useRef(null);
 
   const onLoad = useCallback((ref) => {
@@ -27,4 +27,4 @@ function SearchComponent({ onPlaceSelected }) {
   );
 }
 
-export default SearchComponent;
+export default Search;

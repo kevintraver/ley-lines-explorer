@@ -9,7 +9,7 @@ import {
   OverlayView,
   Polyline
 } from "@react-google-maps/api";
-import SearchComponent from "./SearchComponent";
+import Search from "./Search";
 
 const mapContainerStyle = {
   height: "700px",
@@ -182,7 +182,7 @@ function Map() {
         >
           <FontAwesomeIcon icon={faExpand} />
         </button>
-        <SearchComponent onPlaceSelected={handlePlaceSelected} />
+        <Search onPlaceSelected={handlePlaceSelected} />
         <Marker
           position={marker1Position}
           onDrag={(event) => {
