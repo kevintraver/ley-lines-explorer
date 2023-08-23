@@ -35,6 +35,8 @@ const options = {
 };
 
 function MapComponent() {
+  const [selectedPlacePosition, setSelectedPlacePosition] = useState(null);
+
   const [map, setMap] = React.useState(null);
 
   const onLoad = React.useCallback(function callback(map) {
@@ -62,6 +64,10 @@ function MapComponent() {
   );
 
   const handlePlaceSelected = (place) => {
+    setSelectedPlacePosition({
+      lat: place.geometry.location.lat(),
+      lng: place.geometry.location.lng()
+    });
     if (place.geometry && place.geometry.viewport) {
       map.fitBounds(place.geometry.viewport);
     } else if (place.geometry && place.geometry.location) {
@@ -119,6 +125,20 @@ function MapComponent() {
             });
           }}
         />
+        {selectedPlacePosition && (
+          <Marker
+            position={selectedPlacePosition}
+            draggable={false}
+            icon={{
+              path: window.google.maps.SymbolPath.CIRCLE,
+              scale: 7,
+              fillColor: "#0000FF",
+              fillOpacity: 0.8,
+              strokeWeight: 0
+            }}
+          />
+        )}
+
         <Polyline
           path={path}
           options={{
