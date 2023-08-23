@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExpand } from "@fortawesome/free-solid-svg-icons";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   GoogleMap,
   LoadScript,
@@ -143,25 +143,29 @@ function MapComponent() {
     initialMarker2Position
   );
 
-  useEffect(() => {
-    if (selectedPlacePosition) {
-      const { adjustedPosition } = computeClosestPointAndMidpoint(
-        selectedPlacePosition
-      );
-      setLineToClosestPoint([selectedPlacePosition, adjustedPosition]);
-    }
-  }, [selectedPlacePosition]);
-
   const handlePlaceSelected = (place) => {
     setSelectedPlacePosition({
       lat: place.geometry.location.lat(),
       lng: place.geometry.location.lng()
     });
-    if (place.geometry && place.geometry.viewport) {
-      map.fitBounds(place.geometry.viewport);
-    } else if (place.geometry && place.geometry.location) {
-      map.setCenter(place.geometry.location);
-    }
+    // Extract latitude and longitude from the place object
+    const point = {
+      lat: place.geometry.location.lat(),
+      lng: place.geometry.location.lng()
+    };
+
+    const { adjustedPosition } = computeClosestPointAndMidpoint(point);
+
+    // Set the line to the closest point
+    setLineToClosestPoint([point, adjustedPosition]);
+
+    // Create new bounds
+    const bounds = new window.google.maps.LatLngBounds();
+    bounds.extend(point);
+    bounds.extend(adjustedPosition);
+
+    // Adjust the map to fit these bounds
+    map.fitBounds(bounds);
   };
 
   return (
