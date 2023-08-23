@@ -1,14 +1,9 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faExpand } from "@fortawesome/free-solid-svg-icons";
-
 import React, { useState } from "react";
-import {
-  GoogleMap,
-  LoadScript,
-  Marker,
-  OverlayView,
-  Polyline
-} from "@react-google-maps/api";
+
+import { GoogleMap, LoadScript } from "@react-google-maps/api";
+
+import Path from "./Path";
+import Controls from "./Controls";
 import Search from "./Search";
 
 const mapContainerStyle = {
@@ -16,37 +11,8 @@ const mapContainerStyle = {
   width: "100%"
 };
 
-const userLocale = window.navigator.language;
-
-// Format the distance based on the user's locale
-const formatDistance = (distanceInMeters) => {
-  if (["en-US", "en-GB"].includes(userLocale)) {
-    // Use miles for US & UK
-    const miles = distanceInMeters * 0.000621371;
-    return `${miles.toFixed(2)} miles`;
-  } else {
-    // Use kilometers for other countries
-    const kilometers = distanceInMeters / 1000;
-    return `${kilometers.toFixed(2)} km`;
-  }
-};
-
-const initialMapZoom = 4;
-
-const initialMarker1Position = {
-  // Oracle Park, San Francisco, CA
-  lat: 37.7785951,
-  lng: -122.389269
-};
-
-const initialMarker2Position = {
-  // Wright Brothers Memorial, Kill Devil Hills, NC
-  lat: 36.0183,
-  lng: -75.6671
-};
-
 const options = {
-  zoom: initialMapZoom,
+  zoom: 4,
   streetViewControl: false,
   fullscreenControl: false,
   mapTypeId: "hybrid",
@@ -54,117 +20,33 @@ const options = {
 };
 
 function Map() {
-  const [selectedPlacePosition, setSelectedPlacePosition] = useState(null);
-  const [distanceToPath, setDistanceToPath] = useState(null);
-  const [midpointOfLine, setMidpointOfLine] = useState(null);
-  const [pathShortest, setPathShortest] = useState([]);
-  const [pathLongest, setPathLongest] = useState([]);
-  const [lineToClosestPoint, setLineToClosestPoint] = useState([]);
-  const [marker1Position, setMarker1Position] = useState(
-    initialMarker1Position
-  );
-  const [marker2Position, setMarker2Position] = useState(
-    initialMarker2Position
-  );
+  // eslint-disable-next-line no-unused-vars
+  const [map, setMap] = useState(null);
 
-  const [map, setMap] = React.useState(null);
+  // eslint-disable-next-line no-unused-vars
+  const [pointA, setPointA] = useState({
+    // Oracle Park, San Francisco, CA
+    lat: 37.7785951,
+    lng: -122.389269
+  });
+  // eslint-disable-next-line no-unused-vars
+  const [pointB, setPointB] = useState({
+    // Wright Brothers Memorial, Kill Devil Hills, NC
+    lat: 36.0183,
+    lng: -75.6671
+  });
 
-  function computeClosestPointAndMidpoint(point) {
-    const bearing = window.google.maps.geometry.spherical.computeHeading(
-      new window.google.maps.LatLng(marker1Position),
-      new window.google.maps.LatLng(marker2Position)
-    );
-
-    const distance =
-      window.google.maps.geometry.spherical.computeDistanceBetween(
-        new window.google.maps.LatLng(marker1Position),
-        new window.google.maps.LatLng(point)
-      );
-
-    const adjustedPosition =
-      window.google.maps.geometry.spherical.computeOffset(
-        new window.google.maps.LatLng(marker1Position),
-        distance,
-        bearing
-      );
-
-    const distanceToAdjustedPosition =
-      window.google.maps.geometry.spherical.computeDistanceBetween(
-        new window.google.maps.LatLng(point),
-        adjustedPosition
-      );
-
-    const midpoint = window.google.maps.geometry.spherical.interpolate(
-      new window.google.maps.LatLng(point),
-      adjustedPosition,
-      0.5
-    );
-
-    setDistanceToPath(distanceToAdjustedPosition);
-    setMidpointOfLine(midpoint);
-
-    return {
-      adjustedPosition: {
-        lat: adjustedPosition.lat(),
-        lng: adjustedPosition.lng()
-      }
-    };
-  }
+  const fitBoundsToPathMarkers = (map) => {
+    const bounds = new window.google.maps.LatLngBounds();
+    bounds.extend(pointA);
+    bounds.extend(pointB);
+    map.fitBounds(bounds);
+  };
 
   const onLoad = React.useCallback(function callback(map) {
-    fitBoundsToMarkers(map);
-    updatePathsBasedOnMarkers(marker1Position, marker2Position);
+    fitBoundsToPathMarkers(map);
     setMap(map);
   }, []);
-
-  const fitBoundsToMarkers = (map) => {
-    const bounds = new window.google.maps.LatLngBounds();
-    bounds.extend(marker1Position);
-    bounds.extend(marker2Position);
-    map.fitBounds(bounds);
-  };
-
-  const updatePathsBasedOnMarkers = (pointA, pointB) => {
-    // eslint-disable-next-line new-cap
-    const midpoint = new window.google.maps.geometry.spherical.interpolate(
-      new window.google.maps.LatLng(pointA),
-      new window.google.maps.LatLng(pointB),
-      0.5
-    );
-
-    const antipodalMidpoint = {
-      lat: -midpoint.lat(),
-      lng: (midpoint.lng() + 180) % 360
-    };
-
-    setPathShortest([pointA, pointB]);
-    setPathLongest([pointA, antipodalMidpoint, pointB]);
-  };
-
-  function handlePlaceSelected(place) {
-    setSelectedPlacePosition({
-      lat: place.geometry.location.lat(),
-      lng: place.geometry.location.lng()
-    });
-    // Extract latitude and longitude from the place object
-    const point = {
-      lat: place.geometry.location.lat(),
-      lng: place.geometry.location.lng()
-    };
-
-    const { adjustedPosition } = computeClosestPointAndMidpoint(point);
-
-    // Set the line to the closest point
-    setLineToClosestPoint([point, adjustedPosition]);
-
-    // Create new bounds
-    const bounds = new window.google.maps.LatLngBounds();
-    bounds.extend(point);
-    bounds.extend(adjustedPosition);
-
-    // Adjust the map to fit these bounds
-    map.fitBounds(bounds);
-  }
 
   return (
     <LoadScript
@@ -176,90 +58,9 @@ function Map() {
         options={options}
         onLoad={onLoad}
       >
-        <button
-          className="absolute top-4 left-8 z-10 bg-white px-4 h-8 flex items-center border border-gray-300 rounded cursor-pointer"
-          onClick={() => fitBoundsToMarkers(map)}
-        >
-          <FontAwesomeIcon icon={faExpand} />
-        </button>
-        <Search onPlaceSelected={handlePlaceSelected} />
-        <Marker
-          position={marker1Position}
-          onDrag={(event) => {
-            const newMarker1Position = {
-              lat: event.latLng.lat(),
-              lng: event.latLng.lng()
-            };
-            updatePathsBasedOnMarkers(newMarker1Position, marker2Position);
-          }}
-          draggable={true}
-          onDragEnd={(event) => {
-            setMarker1Position({
-              lat: event.latLng.lat(),
-              lng: event.latLng.lng()
-            });
-          }}
-        />
-        <Marker
-          position={marker2Position}
-          draggable={true}
-          onDrag={(event) => {
-            const newMarker2Position = {
-              lat: event.latLng.lat(),
-              lng: event.latLng.lng()
-            };
-            updatePathsBasedOnMarkers(marker1Position, newMarker2Position);
-          }}
-          onDragEnd={(event) => {
-            setMarker2Position({
-              lat: event.latLng.lat(),
-              lng: event.latLng.lng()
-            });
-          }}
-        />
-        {selectedPlacePosition && (
-          <Marker
-            position={selectedPlacePosition}
-            draggable={false}
-            icon={{
-              path: window.google.maps.SymbolPath.CIRCLE,
-              scale: 7,
-              fillColor: "#FF0000",
-              fillOpacity: 0.8,
-              strokeWeight: 0
-            }}
-          />
-        )}
-
-        <Polyline
-          path={lineToClosestPoint}
-          options={{
-            strokeOpacity: 0.5
-          }}
-        />
-        {midpointOfLine && (
-          <OverlayView
-            position={{ lat: midpointOfLine.lat(), lng: midpointOfLine.lng() }}
-            mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
-          >
-            <div className="p-2 rounded shadow-md">
-              {formatDistance(distanceToPath)}
-            </div>
-          </OverlayView>
-        )}
-        <Polyline
-          path={pathShortest}
-          options={{
-            geodesic: true
-          }}
-        />
-        <Polyline
-          path={pathLongest}
-          options={{
-            geodesic: true,
-            strokeOpacity: 0.33
-          }}
-        />
+        <Controls></Controls>
+        <Search />
+        <Path pointA={pointA} pointB={pointB}></Path>
       </GoogleMap>
     </LoadScript>
   );
