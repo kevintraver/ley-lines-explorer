@@ -41,6 +41,11 @@ const options = {
 function MapComponent() {
   const [mapCenter, setMapCenter] = useState(initialCenterCoordinates);
 
+  const [path, setPath] = useState([
+    initialMarker1Position,
+    initialMarker2Position
+  ]);
+
   const [marker1Position, setMarker1Position] = useState(
     initialMarker1Position
   );
@@ -65,6 +70,12 @@ function MapComponent() {
       >
         <Marker
           position={marker1Position}
+          onDrag={(event) => {
+            setPath((prevPath) => [
+              { lat: event.latLng.lat(), lng: event.latLng.lng() },
+              prevPath[1]
+            ]);
+          }}
           draggable={true}
           onDragEnd={(event) => {
             setMarker1Position({
@@ -76,6 +87,12 @@ function MapComponent() {
         <Marker
           position={marker2Position}
           draggable={true}
+          onDrag={(event) => {
+            setPath((prevPath) => [
+              prevPath[0],
+              { lat: event.latLng.lat(), lng: event.latLng.lng() }
+            ]);
+          }}
           onDragEnd={(event) => {
             setMarker2Position({
               lat: event.latLng.lat(),
@@ -84,7 +101,7 @@ function MapComponent() {
           }}
         />
         <Polyline
-          path={[marker1Position, marker2Position]}
+          path={path}
           options={{
             geodesic: true,
             strokeWeight: 2
