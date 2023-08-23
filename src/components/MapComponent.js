@@ -57,6 +57,15 @@ function MapComponent() {
   const [selectedPlacePosition, setSelectedPlacePosition] = useState(null);
   const [distanceToPath, setDistanceToPath] = useState(null);
   const [midpointOfLine, setMidpointOfLine] = useState(null);
+  const [pathShortest, setPathShortest] = useState([]);
+  const [pathLongest, setPathLongest] = useState([]);
+  const [lineToClosestPoint, setLineToClosestPoint] = useState([]);
+  const [marker1Position, setMarker1Position] = useState(
+    initialMarker1Position
+  );
+  const [marker2Position, setMarker2Position] = useState(
+    initialMarker2Position
+  );
 
   const [map, setMap] = React.useState(null);
 
@@ -131,17 +140,6 @@ function MapComponent() {
     setPathShortest([pointA, pointB]);
     setPathLongest([pointA, antipodalMidpoint, pointB]);
   };
-
-  const [pathShortest, setPathShortest] = useState([]);
-  const [pathLongest, setPathLongest] = useState([]);
-  const [lineToClosestPoint, setLineToClosestPoint] = useState([]);
-
-  const [marker1Position, setMarker1Position] = useState(
-    initialMarker1Position
-  );
-  const [marker2Position, setMarker2Position] = useState(
-    initialMarker2Position
-  );
 
   function handlePlaceSelected(place) {
     setSelectedPlacePosition({
