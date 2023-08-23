@@ -3,30 +3,30 @@ import {
   GoogleMap,
   LoadScript,
   Marker,
-  Polyline,
+  Polyline
 } from "@react-google-maps/api";
 import SearchComponent from "./SearchComponent";
 
 const mapContainerStyle = {
   height: "700px",
-  width: "100%",
+  width: "100%"
 };
 
 const initialCenterCoordinates = {
   lat: 39.0853,
-  lng: -94.5851,
+  lng: -94.5851
 };
 
 const initialMarker1Position = {
   // Oracle Park, San Francisco, CA
   lat: 37.7785951,
-  lng: -122.389269,
+  lng: -122.389269
 };
 
 const initialMarker2Position = {
   // Wright Brothers Memorial, Kill Devil Hills, NC
   lat: 36.0183,
-  lng: -75.6671,
+  lng: -75.6671
 };
 
 const options = {
@@ -35,7 +35,7 @@ const options = {
   fullscreenControl: false,
   mapTypeId: "hybrid",
   mapTypeControl: false,
-  center: initialCenterCoordinates,
+  center: initialCenterCoordinates
 };
 
 function MapComponent() {
@@ -73,7 +73,7 @@ function MapComponent() {
           onDragEnd={(event) => {
             setMarker1Position({
               lat: event.latLng.lat(),
-              lng: event.latLng.lng(),
+              lng: event.latLng.lng()
             });
           }}
         />
@@ -83,7 +83,7 @@ function MapComponent() {
           onDragEnd={(event) => {
             setMarker2Position({
               lat: event.latLng.lat(),
-              lng: event.latLng.lng(),
+              lng: event.latLng.lng()
             });
           }}
         />
@@ -91,7 +91,7 @@ function MapComponent() {
           path={[marker1Position, marker2Position]}
           options={{
             geodesic: true,
-            strokeWeight: 2,
+            strokeWeight: 2
           }}
         />
       </GoogleMap>
