@@ -79,7 +79,6 @@ function MapComponent() {
 
       <SearchComponent onPlaceSelected={handlePlaceSelected} />
       <GoogleMap
-        zoom={initialMapZoom}
         mapContainerStyle={mapContainerStyle}
         options={options}
         onLoad={onLoad}
