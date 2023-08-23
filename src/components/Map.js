@@ -58,7 +58,10 @@ function Map() {
         options={options}
         onLoad={onLoad}
       >
-        <Controls></Controls>
+        <Controls
+          fitBoundsToPathMarkers={fitBoundsToPathMarkers}
+          map={map}
+        ></Controls>
         <Search />
         <Path
           pointA={pointA}
