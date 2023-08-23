@@ -14,11 +14,6 @@ const mapContainerStyle = {
 
 const initialMapZoom = 4;
 
-const initialCenterCoordinates = {
-  lat: 39.0853,
-  lng: -94.5851
-};
-
 const initialMarker1Position = {
   // Oracle Park, San Francisco, CA
   lat: 37.7785951,
@@ -36,12 +31,23 @@ const options = {
   streetViewControl: false,
   fullscreenControl: false,
   mapTypeId: "hybrid",
-  mapTypeControl: false,
-  center: initialCenterCoordinates
+  mapTypeControl: false
 };
 
 function MapComponent() {
-  const [mapCenter, setMapCenter] = useState(initialCenterCoordinates);
+  const [map, setMap] = React.useState(null);
+
+  const onLoad = React.useCallback(function callback(map) {
+    fitBoundsToMarkers(map);
+    setMap(map);
+  }, []);
+
+  const fitBoundsToMarkers = (map) => {
+    const bounds = new window.google.maps.LatLngBounds();
+    bounds.extend(marker1Position);
+    bounds.extend(marker2Position);
+    map.fitBounds(bounds);
+  };
 
   const [path, setPath] = useState([
     initialMarker1Position,
@@ -64,12 +70,19 @@ function MapComponent() {
       googleMapsApiKey="AIzaSyCg3GhYlgSqmae3ql20SCuQoMhr90bUyD8"
       libraries={["places"]}
     >
+      <button
+        className="absolute top-6 left-6 z-10 bg-white px-4 py-2 border border-gray-300 rounded cursor-pointer"
+        onClick={() => fitBoundsToMarkers(map)}
+      >
+        Recenter
+      </button>
+
       <SearchComponent onPlaceSelected={handlePlaceSelected} />
       <GoogleMap
         zoom={initialMapZoom}
         mapContainerStyle={mapContainerStyle}
         options={options}
-        center={mapCenter}
+        onLoad={onLoad}
       >
         <Marker
           position={marker1Position}
