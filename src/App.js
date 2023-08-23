@@ -1,12 +1,13 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import MapComponent from "./components/MapComponent";
 
 function App() {
   return (
     <div className="App">
-      <div className="p-4 bg-blue-500 font-bold text-white">
-        Hello, Tailwind!
-      </div>
+      <main className="p-4">
+        <MapComponent />
+      </main>
     </div>
   );
 }
