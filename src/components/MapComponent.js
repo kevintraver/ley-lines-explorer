@@ -51,7 +51,7 @@ function MapComponent() {
     map.fitBounds(bounds);
   };
 
-  const [path, setPath] = useState([
+  const [pathShortest, setPathShortest] = useState([
     initialMarker1Position,
     initialMarker2Position
   ]);
@@ -96,7 +96,7 @@ function MapComponent() {
         <Marker
           position={marker1Position}
           onDrag={(event) => {
-            setPath((prevPath) => [
+            setPathShortest((prevPath) => [
               { lat: event.latLng.lat(), lng: event.latLng.lng() },
               prevPath[1]
             ]);
@@ -113,7 +113,7 @@ function MapComponent() {
           position={marker2Position}
           draggable={true}
           onDrag={(event) => {
-            setPath((prevPath) => [
+            setPathShortest((prevPath) => [
               prevPath[0],
               { lat: event.latLng.lat(), lng: event.latLng.lng() }
             ]);
@@ -140,7 +140,7 @@ function MapComponent() {
         )}
 
         <Polyline
-          path={path}
+          path={pathShortest}
           options={{
             geodesic: true,
             strokeWeight: 2
