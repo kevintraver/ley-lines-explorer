@@ -53,7 +53,7 @@ const options = {
   mapTypeControl: false
 };
 
-function MapComponent() {
+function Map() {
   const [selectedPlacePosition, setSelectedPlacePosition] = useState(null);
   const [distanceToPath, setDistanceToPath] = useState(null);
   const [midpointOfLine, setMidpointOfLine] = useState(null);
@@ -265,4 +265,4 @@ function MapComponent() {
   );
 }
 
-export default MapComponent;
+export default Map;
