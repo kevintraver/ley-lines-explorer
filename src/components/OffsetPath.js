@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from "react";
 import { Polyline } from "@react-google-maps/api";
 
 function OffsetPath({ pointA, pointB, offsetPoint }) {
