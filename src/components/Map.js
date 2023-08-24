@@ -58,7 +58,12 @@ function Map() {
         onLoad={onLoad}
       >
         <Controls fitBoundsToPoints={fitBoundsToPoints} map={map}></Controls>
-        <Search />
+        <Search
+          map={map}
+          fitBoundsToPoints={fitBoundsToPoints}
+          updatePointA={setPointA}
+          updatePointB={setPointB}
+        />
         <Path
           pointA={pointA}
           pointB={pointB}
