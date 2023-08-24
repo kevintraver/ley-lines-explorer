@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 
-import { GoogleMap, LoadScript } from "@react-google-maps/api";
+import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 
 import Path from "./Path";
 import Controls from "./Controls";
 import Search from "./Search";
+
+const googleMapsLibraries = ["places", "geometry"];
 
 const mapContainerStyle = {
   height: "700px",
@@ -20,6 +22,12 @@ const options = {
 };
 
 function Map() {
+  const { isLoaded } = useJsApiLoader({
+    id: "google-maps",
+    googleMapsApiKey: "AIzaSyCg3GhYlgSqmae3ql20SCuQoMhr90bUyD8",
+    libraries: googleMapsLibraries
+  });
+
   // eslint-disable-next-line no-unused-vars
   const [map, setMap] = useState(null);
 
@@ -47,33 +55,30 @@ function Map() {
     setMap(map);
   }, []);
 
-  return (
-    <LoadScript
-      googleMapsApiKey="AIzaSyCg3GhYlgSqmae3ql20SCuQoMhr90bUyD8"
-      libraries={["places", "geometry"]}
+  return isLoaded ? (
+    <GoogleMap
+      mapContainerStyle={mapContainerStyle}
+      options={options}
+      onLoad={onLoad}
     >
-      <GoogleMap
-        mapContainerStyle={mapContainerStyle}
-        options={options}
-        onLoad={onLoad}
-      >
-        <Controls fitBoundsToPoints={fitBoundsToPoints} map={map}></Controls>
-        <Search
-          map={map}
-          pointA={pointA}
-          pointB={pointB}
-          fitBoundsToPoints={fitBoundsToPoints}
-          updatePointA={setPointA}
-          updatePointB={setPointB}
-        />
-        <Path
-          pointA={pointA}
-          pointB={pointB}
-          updatePointA={setPointA}
-          updatePointB={setPointB}
-        ></Path>
-      </GoogleMap>
-    </LoadScript>
+      <Controls fitBoundsToPoints={fitBoundsToPoints} map={map}></Controls>
+      <Search
+        map={map}
+        pointA={pointA}
+        pointB={pointB}
+        fitBoundsToPoints={fitBoundsToPoints}
+        updatePointA={setPointA}
+        updatePointB={setPointB}
+      />
+      <Path
+        pointA={pointA}
+        pointB={pointB}
+        updatePointA={setPointA}
+        updatePointB={setPointB}
+      ></Path>
+    </GoogleMap>
+  ) : (
+    <></>
   );
 }
 
