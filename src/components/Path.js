@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { Marker, Polyline } from "@react-google-maps/api";
-import Buffer from "./Buffer";
+// import Buffer from "./Buffer";
 
 function Path({ pointA, pointB, ...props }) {
   const [midPoint, setMidPoint] = useState([]);
@@ -71,7 +71,7 @@ function Path({ pointA, pointB, ...props }) {
           strokeOpacity: 0.33
         }}
       />
-      <Buffer pointA={pointA} pointB={pointB} />
+      {/* <Buffer pointA={pointA} pointB={pointB} /> */}
     </>
   );
 }
