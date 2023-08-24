@@ -3,9 +3,9 @@ import { StandaloneSearchBox, Marker } from "@react-google-maps/api";
 
 function Search({ ...props }) {
   const searchBoxRef = useRef(null);
+  const [searchLocation, setSearchLocation] = useState(null);
 
   const [dropdownSelection, setDropdownSelection] = useState("search");
-  const [searchLocation, setSearchLocation] = useState(null);
 
   const handleDropdownChange = (e) => {
     setDropdownSelection(e.target.value);
