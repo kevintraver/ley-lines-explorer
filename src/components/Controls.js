@@ -6,7 +6,7 @@ function Controls({ ...props }) {
     <>
       <button
         className="absolute bottom-32 right-2 z-10 bg-white px-4 h-8 flex items-center border border-gray-300 rounded cursor-pointer"
-        onClick={() => props.fitBoundsToPathMarkers(props.map)}
+        onClick={() => props.fitBoundsToPoints(props.map)}
       >
         <FontAwesomeIcon icon={faExpand} />
       </button>

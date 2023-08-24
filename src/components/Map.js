@@ -36,15 +36,14 @@ function Map() {
     lng: -75.6671
   });
 
-  const fitBoundsToPathMarkers = (map) => {
+  const fitBoundsToPoints = (map, points = [pointA, pointB]) => {
     const bounds = new window.google.maps.LatLngBounds();
-    bounds.extend(pointA);
-    bounds.extend(pointB);
+    points.forEach((point) => bounds.extend(point));
     map.fitBounds(bounds);
   };
 
   const onLoad = React.useCallback(function callback(map) {
-    fitBoundsToPathMarkers(map);
+    fitBoundsToPoints(map);
     setMap(map);
   }, []);
 
@@ -58,10 +57,7 @@ function Map() {
         options={options}
         onLoad={onLoad}
       >
-        <Controls
-          fitBoundsToPathMarkers={fitBoundsToPathMarkers}
-          map={map}
-        ></Controls>
+        <Controls fitBoundsToPoints={fitBoundsToPoints} map={map}></Controls>
         <Search />
         <Path
           pointA={pointA}
