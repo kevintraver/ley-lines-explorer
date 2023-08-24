@@ -24,7 +24,7 @@ const options = {
 function Map() {
   const { isLoaded } = useJsApiLoader({
     id: "google-maps",
-    googleMapsApiKey: "AIzaSyCg3GhYlgSqmae3ql20SCuQoMhr90bUyD8",
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries: googleMapsLibraries
   });
 
