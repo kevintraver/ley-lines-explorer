@@ -45,6 +45,7 @@ function Search({ ...props }) {
           <div className="flex items-center absolute top-4 left-1/2 transform -translate-x-1/2 z-10">
             <input
               type="text"
+              placeholder="Enter a location..."
               className="border border-gray-300 w-60 h-8 px-3 rounded-md shadow-md text-sm outline-none overflow-ellipsis"
             />
             <select
