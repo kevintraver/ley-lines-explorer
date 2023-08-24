@@ -4,6 +4,7 @@ import OffsetPath from "./OffsetPath";
 
 function Search({ ...props }) {
   const searchBoxRef = useRef(null);
+  const searchInputRef = useRef(null);
   const [searchLocation, setSearchLocation] = useState(null);
 
   const [dropdownSelection, setDropdownSelection] = useState("search");
@@ -45,6 +46,7 @@ function Search({ ...props }) {
         <>
           <div className="flex items-center absolute top-4 left-1/2 transform -translate-x-1/2 z-10">
             <input
+              ref={searchInputRef}
               type="text"
               placeholder="Enter a location..."
               className="border border-gray-300 w-60 h-8 px-3 rounded-md shadow-md text-sm outline-none overflow-ellipsis"
@@ -67,6 +69,12 @@ function Search({ ...props }) {
           draggable={true}
           onDrag={(event) => {
             setSearchLocation(event.latLng.toJSON());
+          }}
+          onDragEnd={(event) => {
+            setSearchLocation(event.latLng.toJSON());
+            if (searchInputRef.current) {
+              searchInputRef.current.value = "";
+            }
           }}
         />
       )}
