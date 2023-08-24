@@ -60,6 +60,8 @@ function Map() {
         <Controls fitBoundsToPoints={fitBoundsToPoints} map={map}></Controls>
         <Search
           map={map}
+          pointA={pointA}
+          pointB={pointB}
           fitBoundsToPoints={fitBoundsToPoints}
           updatePointA={setPointA}
           updatePointB={setPointB}

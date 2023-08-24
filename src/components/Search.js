@@ -1,5 +1,6 @@
 import React, { useState, useRef, useCallback } from "react";
 import { StandaloneSearchBox, Marker } from "@react-google-maps/api";
+import OffsetPath from "./OffsetPath";
 
 function Search({ ...props }) {
   const searchBoxRef = useRef(null);
@@ -60,7 +61,22 @@ function Search({ ...props }) {
           </div>
         </>
       </StandaloneSearchBox>
-      {searchLocation && <Marker position={searchLocation} draggable={true} />}
+      {searchLocation && (
+        <Marker
+          position={searchLocation}
+          draggable={true}
+          onDrag={(event) => {
+            setSearchLocation(event.latLng.toJSON());
+          }}
+        />
+      )}
+      {searchLocation && (
+        <OffsetPath
+          pointA={props.pointA}
+          pointB={props.pointB}
+          offsetPoint={searchLocation}
+        />
+      )}
     </>
   );
 }
