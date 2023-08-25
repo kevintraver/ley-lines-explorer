@@ -37,7 +37,7 @@ function Search({ ...props }) {
             <input
               ref={searchInputRef}
               type="text"
-              placeholder="Enter a location..."
+              placeholder="Search..."
               className="border border-gray-300 w-60 h-8 px-3 rounded-md shadow-md text-sm outline-none overflow-ellipsis"
             />
           </div>
