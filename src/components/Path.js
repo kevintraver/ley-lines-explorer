@@ -4,35 +4,14 @@ import React, { useEffect, useState } from 'react'
 import { Marker, Polyline } from '@react-google-maps/api'
 // import Buffer from "./Buffer";
 
-function Path({ pointA, pointB, ...props }) {
-  const [midPoint, setMidPoint] = useState([])
-  const [antipodalMidpoint, setAntipodalMidpoint] = useState([])
-
+function Path({ pointA, pointB, midPoint, antipodalMidpoint, ...props }) {
   const [pathShortest, setPathShortest] = useState([])
   const [pathLongest, setPathLongest] = useState([])
 
   useEffect(() => {
-    const midPointLatLng = window.google.maps.geometry.spherical.interpolate(
-      new window.google.maps.LatLng(pointA),
-      new window.google.maps.LatLng(pointB),
-      0.5
-    )
-
-    const midPointObj = {
-      lat: midPointLatLng.lat(),
-      lng: midPointLatLng.lng()
-    }
-    setMidPoint(midPointObj)
-
-    const antipodalMidpointObj = {
-      lat: -midPointObj.lat,
-      lng: (midPointObj.lng + 180) % 360
-    }
-    setAntipodalMidpoint(antipodalMidpointObj)
-
     setPathShortest([pointA, pointB])
-    setPathLongest([pointA, antipodalMidpointObj, pointB])
-  }, [pointA, pointB])
+    setPathLongest([pointA, antipodalMidpoint, pointB])
+  }, [pointA, pointB, midPoint, antipodalMidpoint])
 
   return (
     <>

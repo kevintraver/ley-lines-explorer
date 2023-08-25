@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api'
 
@@ -45,6 +45,34 @@ function Map() {
     lng: -75.6671
   })
 
+  const [midPoint, setMidPoint] = useState([])
+  const [antipodalMidpoint, setAntipodalMidpoint] = useState([])
+
+  const calculateMidpoint = (pointA, pointB) => {
+    const midPointLatLng = window.google.maps.geometry.spherical.interpolate(
+      new window.google.maps.LatLng(pointA),
+      new window.google.maps.LatLng(pointB),
+      0.5
+    )
+    const midPointObj = {
+      lat: midPointLatLng.lat(),
+      lng: midPointLatLng.lng()
+    }
+    setMidPoint(midPointObj)
+
+    const antipodalMidpointObj = {
+      lat: -midPointObj.lat,
+      lng: (midPointObj.lng + 180) % 360
+    }
+    setAntipodalMidpoint(antipodalMidpointObj)
+  }
+
+  useEffect(() => {
+    if (isLoaded) {
+      calculateMidpoint(pointA, pointB)
+    }
+  }, [pointA, pointB])
+
   const fitBoundsToPoints = (map, points = [pointA, pointB]) => {
     const bounds = new window.google.maps.LatLngBounds()
     points.forEach((point) => bounds.extend(point))
@@ -52,6 +80,7 @@ function Map() {
   }
 
   const onLoad = React.useCallback(function callback(map) {
+    calculateMidpoint(pointA, pointB)
     fitBoundsToPoints(map)
     setMap(map)
   }, [])
@@ -71,12 +100,16 @@ function Map() {
         updatePointA={setPointA}
         updatePointB={setPointB}
       />
-      <Path
-        pointA={pointA}
-        pointB={pointB}
-        updatePointA={setPointA}
-        updatePointB={setPointB}
-      ></Path>
+      {midPoint && midPoint.lat && midPoint.lng ? (
+        <Path
+          pointA={pointA}
+          pointB={pointB}
+          midPoint={midPoint}
+          antipodalMidpoint={antipodalMidpoint}
+          updatePointA={setPointA}
+          updatePointB={setPointB}
+        ></Path>
+      ) : null}
     </GoogleMap>
   ) : (
     <></>
