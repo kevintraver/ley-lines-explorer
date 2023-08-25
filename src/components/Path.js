@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react'
 import { Marker, Polyline } from '@react-google-maps/api'
 // import Buffer from "./Buffer";
