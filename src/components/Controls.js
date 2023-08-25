@@ -1,5 +1,5 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faExpand } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faExpand } from '@fortawesome/free-solid-svg-icons'
 
 function Controls({ ...props }) {
   return (
@@ -11,7 +11,7 @@ function Controls({ ...props }) {
         <FontAwesomeIcon icon={faExpand} />
       </button>
     </>
-  );
+  )
 }
 
-export default Controls;
+export default Controls

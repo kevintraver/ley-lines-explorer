@@ -1,44 +1,44 @@
-import React, { useState, useRef, useCallback } from "react";
-import { StandaloneSearchBox, Marker } from "@react-google-maps/api";
+import React, { useState, useRef, useCallback } from 'react'
+import { StandaloneSearchBox, Marker } from '@react-google-maps/api'
 // import OffsetPath from "./OffsetPath";
 
 function Search({ ...props }) {
-  const searchBoxRef = useRef(null);
-  const searchInputRef = useRef(null);
-  const [searchLocation, setSearchLocation] = useState(null);
+  const searchBoxRef = useRef(null)
+  const searchInputRef = useRef(null)
+  const [searchLocation, setSearchLocation] = useState(null)
 
-  const [dropdownSelection, setDropdownSelection] = useState("search");
+  const [dropdownSelection, setDropdownSelection] = useState('search')
 
   const handleDropdownChange = (e) => {
-    setDropdownSelection(e.target.value);
-  };
+    setDropdownSelection(e.target.value)
+  }
 
   const onLoad = useCallback((ref) => {
-    searchBoxRef.current = ref;
-  }, []);
+    searchBoxRef.current = ref
+  }, [])
 
   const onPlacesChanged = () => {
     if (searchBoxRef.current) {
-      const places = searchBoxRef.current.getPlaces();
-      if (places.length === 0) return;
+      const places = searchBoxRef.current.getPlaces()
+      if (places.length === 0) return
 
-      const location = places[0].geometry.location;
+      const location = places[0].geometry.location
 
       switch (dropdownSelection) {
-        case "search":
-          setSearchLocation(location);
-          break;
-        case "updateA":
-          props.updatePointA(location);
-          break;
-        case "updateB":
-          props.updatePointB(location);
-          break;
+        case 'search':
+          setSearchLocation(location)
+          break
+        case 'updateA':
+          props.updatePointA(location)
+          break
+        case 'updateB':
+          props.updatePointB(location)
+          break
         default:
-          break;
+          break
       }
     }
-  };
+  }
 
   return (
     <>
@@ -68,12 +68,12 @@ function Search({ ...props }) {
           position={searchLocation}
           draggable={true}
           onDrag={(event) => {
-            setSearchLocation(event.latLng.toJSON());
+            setSearchLocation(event.latLng.toJSON())
           }}
           onDragEnd={(event) => {
-            setSearchLocation(event.latLng.toJSON());
+            setSearchLocation(event.latLng.toJSON())
             if (searchInputRef.current) {
-              searchInputRef.current.value = "";
+              searchInputRef.current.value = ''
             }
           }}
         />
@@ -86,7 +86,7 @@ function Search({ ...props }) {
         />
       )} */}
     </>
-  );
+  )
 }
 
-export default Search;
+export default Search

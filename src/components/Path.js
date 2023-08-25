@@ -1,37 +1,37 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useState } from "react";
-import { Marker, Polyline } from "@react-google-maps/api";
+import React, { useEffect, useState } from 'react'
+import { Marker, Polyline } from '@react-google-maps/api'
 // import Buffer from "./Buffer";
 
 function Path({ pointA, pointB, ...props }) {
-  const [midPoint, setMidPoint] = useState([]);
-  const [antipodalMidpoint, setAntipodalMidpoint] = useState([]);
+  const [midPoint, setMidPoint] = useState([])
+  const [antipodalMidpoint, setAntipodalMidpoint] = useState([])
 
-  const [pathShortest, setPathShortest] = useState([]);
-  const [pathLongest, setPathLongest] = useState([]);
+  const [pathShortest, setPathShortest] = useState([])
+  const [pathLongest, setPathLongest] = useState([])
 
   useEffect(() => {
     const midPointLatLng = window.google.maps.geometry.spherical.interpolate(
       new window.google.maps.LatLng(pointA),
       new window.google.maps.LatLng(pointB),
       0.5
-    );
+    )
 
     const midPointObj = {
       lat: midPointLatLng.lat(),
       lng: midPointLatLng.lng()
-    };
-    setMidPoint(midPointObj);
+    }
+    setMidPoint(midPointObj)
 
     const antipodalMidpointObj = {
       lat: -midPointObj.lat,
       lng: (midPointObj.lng + 180) % 360
-    };
-    setAntipodalMidpoint(antipodalMidpointObj);
+    }
+    setAntipodalMidpoint(antipodalMidpointObj)
 
-    setPathShortest([pointA, pointB]);
-    setPathLongest([pointA, antipodalMidpointObj, pointB]);
-  }, [pointA, pointB]);
+    setPathShortest([pointA, pointB])
+    setPathLongest([pointA, antipodalMidpointObj, pointB])
+  }, [pointA, pointB])
 
   return (
     <>
@@ -42,8 +42,8 @@ function Path({ pointA, pointB, ...props }) {
           const newPointA = {
             lat: event.latLng.lat(),
             lng: event.latLng.lng()
-          };
-          props.updatePointA(newPointA);
+          }
+          props.updatePointA(newPointA)
         }}
       />
       <Polyline
@@ -60,8 +60,8 @@ function Path({ pointA, pointB, ...props }) {
           const newPointB = {
             lat: event.latLng.lat(),
             lng: event.latLng.lng()
-          };
-          props.updatePointB(newPointB);
+          }
+          props.updatePointB(newPointB)
         }}
       />
       <Polyline
@@ -73,7 +73,7 @@ function Path({ pointA, pointB, ...props }) {
       />
       {/* <Buffer pointA={pointA} pointB={pointB} /> */}
     </>
-  );
+  )
 }
 
-export default Path;
+export default Path

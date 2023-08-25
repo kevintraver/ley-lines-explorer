@@ -1,4 +1,4 @@
-import { Polyline } from "@react-google-maps/api";
+import { Polyline } from '@react-google-maps/api'
 
 function OffsetPath({ pointA, pointB, offsetPoint }) {
   return (
@@ -12,7 +12,7 @@ function OffsetPath({ pointA, pointB, offsetPoint }) {
         }}
       />
     </>
-  );
+  )
 }
 
-export default OffsetPath;
+export default OffsetPath

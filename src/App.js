@@ -1,5 +1,5 @@
-import "./App.css";
-import Map from "./components/Map";
+import './App.css'
+import Map from './components/Map'
 
 function App() {
   return (
@@ -8,7 +8,7 @@ function App() {
         <Map />
       </main>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
