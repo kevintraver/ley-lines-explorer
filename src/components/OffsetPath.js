@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react'
 
 import { Polyline } from '@react-google-maps/api'

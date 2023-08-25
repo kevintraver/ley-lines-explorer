@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useState, useRef, useCallback } from 'react'
 import { StandaloneSearchBox, Marker } from '@react-google-maps/api'
 // import OffsetPath from "./OffsetPath";
