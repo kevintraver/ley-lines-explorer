@@ -25,20 +25,7 @@ function Search({ ...props }) {
       if (places.length === 0) return
 
       const location = places[0].geometry.location
-
-      switch (dropdownSelection) {
-        case 'search':
-          setSearchLocation(location)
-          break
-        case 'updateA':
-          props.updatePointA(location)
-          break
-        case 'updateB':
-          props.updatePointB(location)
-          break
-        default:
-          break
-      }
+      setSearchLocation(location)
     }
   }
 
@@ -53,15 +40,6 @@ function Search({ ...props }) {
               placeholder="Enter a location..."
               className="border border-gray-300 w-60 h-8 px-3 rounded-md shadow-md text-sm outline-none overflow-ellipsis"
             />
-            <select
-              value={dropdownSelection}
-              onChange={handleDropdownChange}
-              className="ml-2 border border-gray-300 h-8 rounded-md shadow-md text-sm outline-none"
-            >
-              <option value="search">Search</option>
-              <option value="updateA">Update Point A</option>
-              <option value="updateB">Update Point B</option>
-            </select>
           </div>
         </>
       </StandaloneSearchBox>
