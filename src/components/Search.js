@@ -64,13 +64,13 @@ function Search({
           }}
         />
       )}
-      {searchLocation.lat && searchLocation.lng && (
+      {/* {searchLocation.lat && searchLocation.lng && (
         <OffsetPath
           pointA={pointA}
           pointB={pointB}
           offsetPoint={searchLocationPoint}
         />
-      )}
+      )} */}
     </>
   )
 }
