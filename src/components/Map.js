@@ -55,6 +55,14 @@ function Map() {
   const [searchLocation, setSearchLocation] = useState([])
   const [searchLocationPoint, setSearchLocationPoint] = useState([])
 
+  const [shouldZoomInA, setShouldZoomInA] = useState(false)
+  const [shouldZoomInB, setShouldZoomInB] = useState(false)
+
+  const resetZoomState = () => {
+    setShouldZoomInA(false)
+    setShouldZoomInB(false)
+  }
+
   const calculateMidpoint = (pointA, pointB) => {
     const midPointLatLng = window.google.maps.geometry.spherical.interpolate(
       new window.google.maps.LatLng(pointA),
@@ -115,6 +123,9 @@ function Map() {
     map.addListener('zoom_changed', () => {
       setCurrentZoomLevel(map.getZoom())
     })
+    map.addListener('dragend', () => {
+      resetZoomState()
+    })
   }, [])
 
   return isLoaded ? (
@@ -126,6 +137,10 @@ function Map() {
       <Controls
         fitMapBoundsToPoints={fitMapBoundsToPoints}
         currentZoomLevel={currentZoomLevel}
+        shouldZoomInA={shouldZoomInA}
+        setShouldZoomInA={setShouldZoomInA}
+        shouldZoomInB={shouldZoomInB}
+        setShouldZoomInB={setShouldZoomInB}
         map={map}
         centerMap={centerMap}
         pointA={pointA}
