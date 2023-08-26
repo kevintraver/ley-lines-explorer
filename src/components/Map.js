@@ -20,7 +20,8 @@ const options = {
   streetViewControl: false,
   fullscreenControl: false,
   mapTypeId: 'hybrid',
-  mapTypeControl: false
+  mapTypeControl: false,
+  zoomControl: false
 }
 
 function Map() {
@@ -77,7 +78,15 @@ function Map() {
     }
   }, [pointA, pointB])
 
-  const fitBoundsToPoints = (map, points = [pointA, pointB]) => {
+  const fitBoundsToPoints = (map) => {
+    const points = [pointA, pointB]
+    if (
+      searchLocationPoint &&
+      searchLocationPoint.lat &&
+      searchLocationPoint.lng
+    ) {
+      points.push(searchLocationPoint)
+    }
     const bounds = new window.google.maps.LatLngBounds()
     points.forEach((point) => bounds.extend(point))
     map.fitBounds(bounds)
@@ -113,6 +122,7 @@ function Map() {
         map={map}
         pointA={pointA}
         pointB={pointB}
+        centerMap={centerMap}
         searchLocation={searchLocation}
         searchLocationPoint={searchLocationPoint}
         setSearchLocation={setSearchLocation}
