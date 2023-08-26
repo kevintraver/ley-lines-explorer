@@ -4,12 +4,18 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useRef, useCallback } from 'react'
 import { StandaloneSearchBox, Marker } from '@react-google-maps/api'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faGlobe,
+  faMagnifyingGlassLocation
+} from '@fortawesome/free-solid-svg-icons'
 import OffsetPath from './OffsetPath'
 
 function Search({
   map,
   pointA,
   pointB,
+  centerMap,
   searchLocation,
   searchLocationPoint,
   setSearchLocation,
@@ -33,6 +39,7 @@ function Search({
         lat: location.lat(),
         lng: location.lng()
       })
+      centerMap(location)
     }
   }
 
@@ -47,6 +54,12 @@ function Search({
               placeholder="Search..."
               className="border border-gray-300 w-60 h-8 px-3 rounded-md shadow-md text-sm outline-none overflow-ellipsis"
             />
+            <button
+              className="ml-2 z-10 bg-white px-4 h-8 flex items-center border border-gray-300 rounded cursor-pointer"
+              onClick={() => centerMap(searchLocationPoint)}
+            >
+              <FontAwesomeIcon icon={faMagnifyingGlassLocation} />
+            </button>
           </div>
         </>
       </StandaloneSearchBox>
