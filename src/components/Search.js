@@ -62,6 +62,9 @@ function Search({
               searchInputRef.current.value = ''
             }
           }}
+          icon={{
+            url: 'https://mt.google.com/vt/icon?color=ff004C13&name=icons/spotlight/spotlight-waypoint-blue.png'
+          }}
         />
       )}
       {/* {searchLocation.lat && searchLocation.lng && (

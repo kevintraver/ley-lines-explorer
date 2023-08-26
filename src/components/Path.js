@@ -25,6 +25,9 @@ function Path({ pointA, pointB, midPoint, antipodalMidpoint, ...props }) {
           }
           props.updatePointA(newPointA)
         }}
+        icon={{
+          url: 'https://mt.googleapis.com/vt/icon/name=icons/spotlight/spotlight-poi.png'
+        }}
       />
       <Polyline
         path={pathShortest}
@@ -42,6 +45,9 @@ function Path({ pointA, pointB, midPoint, antipodalMidpoint, ...props }) {
             lng: event.latLng.lng()
           }
           props.updatePointB(newPointB)
+        }}
+        icon={{
+          url: 'https://mt.googleapis.com/vt/icon/name=icons/spotlight/spotlight-poi.png'
         }}
       />
       <Polyline
