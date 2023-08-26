@@ -34,6 +34,8 @@ function Map() {
   // eslint-disable-next-line no-unused-vars
   const [map, setMap] = useState(null)
 
+  const [currentZoomLevel, setCurrentZoomLevel] = useState(null)
+
   // eslint-disable-next-line no-unused-vars
   const [pointA, setPointA] = useState({
     // Oracle Park, San Francisco, CA
@@ -110,6 +112,9 @@ function Map() {
     calculateMidpoint(pointA, pointB)
     fitMapBoundsToPoints(map)
     setMap(map)
+    map.addListener('zoom_changed', () => {
+      setCurrentZoomLevel(map.getZoom())
+    })
   }, [])
 
   return isLoaded ? (
@@ -120,6 +125,7 @@ function Map() {
     >
       <Controls
         fitMapBoundsToPoints={fitMapBoundsToPoints}
+        currentZoomLevel={currentZoomLevel}
         map={map}
         centerMap={centerMap}
         pointA={pointA}
