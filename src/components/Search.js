@@ -1,13 +1,15 @@
+/* eslint-disable no-debugger */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useState, useRef, useCallback } from 'react'
 import { StandaloneSearchBox, Marker } from '@react-google-maps/api'
-// import OffsetPath from "./OffsetPath";
+import OffsetPath from './OffsetPath'
 
 function Search({ ...props }) {
   const searchBoxRef = useRef(null)
   const searchInputRef = useRef(null)
   const [searchLocation, setSearchLocation] = useState(null)
+  const [searchLocationPoint, setSearchLocationPoint] = useState(null)
 
   const [dropdownSelection, setDropdownSelection] = useState('search')
 
@@ -26,6 +28,10 @@ function Search({ ...props }) {
 
       const location = places[0].geometry.location
       setSearchLocation(location)
+      setSearchLocationPoint({
+        lat: location.lat(),
+        lng: location.lng()
+      })
     }
   }
 
@@ -48,23 +54,23 @@ function Search({ ...props }) {
           position={searchLocation}
           draggable={true}
           onDrag={(event) => {
-            setSearchLocation(event.latLng.toJSON())
+            setSearchLocationPoint(event.latLng.toJSON())
           }}
           onDragEnd={(event) => {
-            setSearchLocation(event.latLng.toJSON())
+            setSearchLocationPoint(event.latLng.toJSON())
             if (searchInputRef.current) {
               searchInputRef.current.value = ''
             }
           }}
         />
       )}
-      {/* {searchLocation && (
+      {searchLocation && (
         <OffsetPath
           pointA={props.pointA}
           pointB={props.pointB}
-          offsetPoint={searchLocation}
+          offsetPoint={searchLocationPoint}
         />
-      )} */}
+      )}
     </>
   )
 }
