@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from 'react'
 
@@ -48,6 +49,9 @@ function Map() {
   const [midPoint, setMidPoint] = useState([])
   const [antipodalMidpoint, setAntipodalMidpoint] = useState([])
 
+  const [searchLocation, setSearchLocation] = useState([])
+  const [searchLocationPoint, setSearchLocationPoint] = useState([])
+
   const calculateMidpoint = (pointA, pointB) => {
     const midPointLatLng = window.google.maps.geometry.spherical.interpolate(
       new window.google.maps.LatLng(pointA),
@@ -79,6 +83,12 @@ function Map() {
     map.fitBounds(bounds)
   }
 
+  const centerMap = (point) => {
+    if (map) {
+      map.setCenter(point)
+    }
+  }
+
   const onLoad = React.useCallback(function callback(map) {
     calculateMidpoint(pointA, pointB)
     fitBoundsToPoints(map)
@@ -91,14 +101,22 @@ function Map() {
       options={options}
       onLoad={onLoad}
     >
-      <Controls fitBoundsToPoints={fitBoundsToPoints} map={map}></Controls>
+      <Controls
+        fitBoundsToPoints={fitBoundsToPoints}
+        map={map}
+        centerMap={centerMap}
+        pointA={pointA}
+        pointB={pointB}
+        searchLocation={searchLocation} // Make sure you have this state in your parent component
+      />
       <Search
         map={map}
         pointA={pointA}
         pointB={pointB}
-        fitBoundsToPoints={fitBoundsToPoints}
-        updatePointA={setPointA}
-        updatePointB={setPointB}
+        searchLocation={searchLocation}
+        searchLocationPoint={searchLocationPoint}
+        setSearchLocation={setSearchLocation}
+        setSearchLocationPoint={setSearchLocationPoint}
       />
       {midPoint && midPoint.lat && midPoint.lng ? (
         <Path

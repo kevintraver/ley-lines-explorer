@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-debugger */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
@@ -5,11 +6,17 @@ import React, { useState, useRef, useCallback } from 'react'
 import { StandaloneSearchBox, Marker } from '@react-google-maps/api'
 import OffsetPath from './OffsetPath'
 
-function Search({ ...props }) {
+function Search({
+  map,
+  pointA,
+  pointB,
+  searchLocation,
+  searchLocationPoint,
+  setSearchLocation,
+  setSearchLocationPoint
+}) {
   const searchBoxRef = useRef(null)
   const searchInputRef = useRef(null)
-  const [searchLocation, setSearchLocation] = useState(null)
-  const [searchLocationPoint, setSearchLocationPoint] = useState(null)
 
   const onLoad = useCallback((ref) => {
     searchBoxRef.current = ref
@@ -43,7 +50,7 @@ function Search({ ...props }) {
           </div>
         </>
       </StandaloneSearchBox>
-      {searchLocation && (
+      {searchLocation.lat && searchLocation.lng && (
         <Marker
           position={searchLocation}
           draggable={true}
@@ -57,10 +64,10 @@ function Search({ ...props }) {
           }}
         />
       )}
-      {searchLocation && (
+      {searchLocation.lat && searchLocation.lng && (
         <OffsetPath
-          pointA={props.pointA}
-          pointB={props.pointB}
+          pointA={pointA}
+          pointB={pointB}
           offsetPoint={searchLocationPoint}
         />
       )}
