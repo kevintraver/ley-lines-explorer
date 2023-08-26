@@ -11,12 +11,6 @@ function Search({ ...props }) {
   const [searchLocation, setSearchLocation] = useState(null)
   const [searchLocationPoint, setSearchLocationPoint] = useState(null)
 
-  const [dropdownSelection, setDropdownSelection] = useState('search')
-
-  const handleDropdownChange = (e) => {
-    setDropdownSelection(e.target.value)
-  }
-
   const onLoad = useCallback((ref) => {
     searchBoxRef.current = ref
   }, [])
