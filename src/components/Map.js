@@ -93,8 +93,8 @@ function Map() {
   }
 
   const centerMap = (point) => {
-    if (map) {
-      map.setCenter(point)
+    if (map && point.lat && point.lng) {
+      map.panTo(point)
     }
   }
 
