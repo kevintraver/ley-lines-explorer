@@ -20,13 +20,15 @@ function Controls({
   shouldZoomInA,
   setShouldZoomInA,
   shouldZoomInB,
-  setShouldZoomInB
+  setShouldZoomInB,
+  iconStateA,
+  setIconStateA,
+  iconStateB,
+  setIconStateB
 }) {
   // Local state to track the previous zoom levels and icon state
   const [prevZoomLevelA, setPrevZoomLevelA] = useState(currentZoomLevel)
   const [prevZoomLevelB, setPrevZoomLevelB] = useState(currentZoomLevel)
-  const [iconStateA, setIconStateA] = useState(faMagnifyingGlassLocation)
-  const [iconStateB, setIconStateB] = useState(faMagnifyingGlassLocation)
 
   // Generalized function to handle centering and zooming
   const handleCenterAndZoom = (

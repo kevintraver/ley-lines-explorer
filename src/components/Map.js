@@ -4,6 +4,14 @@ import React, { useEffect, useState } from 'react'
 
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api'
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faGlobe,
+  faMagnifyingGlassLocation,
+  faMagnifyingGlassPlus,
+  faMagnifyingGlassMinus
+} from '@fortawesome/free-solid-svg-icons'
+
 import Path from './Path'
 import Controls from './Controls'
 import Search from './Search'
@@ -58,10 +66,8 @@ function Map() {
   const [shouldZoomInA, setShouldZoomInA] = useState(false)
   const [shouldZoomInB, setShouldZoomInB] = useState(false)
 
-  const resetZoomState = () => {
-    setShouldZoomInA(false)
-    setShouldZoomInB(false)
-  }
+  const [iconStateA, setIconStateA] = useState(faMagnifyingGlassLocation)
+  const [iconStateB, setIconStateB] = useState(faMagnifyingGlassLocation)
 
   const calculateMidpoint = (pointA, pointB) => {
     const midPointLatLng = window.google.maps.geometry.spherical.interpolate(
@@ -124,7 +130,10 @@ function Map() {
       setCurrentZoomLevel(map.getZoom())
     })
     map.addListener('dragend', () => {
-      resetZoomState()
+      setShouldZoomInA(false)
+      setShouldZoomInB(false)
+      setIconStateA(faMagnifyingGlassLocation)
+      setIconStateB(faMagnifyingGlassLocation)
     })
   }, [])
 
@@ -141,6 +150,10 @@ function Map() {
         setShouldZoomInA={setShouldZoomInA}
         shouldZoomInB={shouldZoomInB}
         setShouldZoomInB={setShouldZoomInB}
+        iconStateA={iconStateA}
+        setIconStateA={setIconStateA}
+        iconStateB={iconStateB}
+        setIconStateB={setIconStateB}
         map={map}
         centerMap={centerMap}
         pointA={pointA}
