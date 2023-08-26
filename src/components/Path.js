@@ -4,7 +4,14 @@ import React, { useEffect, useState } from 'react'
 import { Marker, Polyline } from '@react-google-maps/api'
 // import Buffer from "./Buffer";
 
-function Path({ pointA, pointB, midPoint, antipodalMidpoint, ...props }) {
+function Path({
+  pointA,
+  pointB,
+  midPoint,
+  antipodalMidpoint,
+  centerMap,
+  ...props
+}) {
   const [pathShortest, setPathShortest] = useState([])
   const [pathLongest, setPathLongest] = useState([])
 
@@ -28,6 +35,9 @@ function Path({ pointA, pointB, midPoint, antipodalMidpoint, ...props }) {
         icon={{
           url: 'https://mt.googleapis.com/vt/icon/name=icons/spotlight/spotlight-poi.png'
         }}
+        onDragEnd={(event) => {
+          centerMap(event.latLng.toJSON())
+        }}
       />
       <Polyline
         path={pathShortest}
@@ -45,6 +55,9 @@ function Path({ pointA, pointB, midPoint, antipodalMidpoint, ...props }) {
             lng: event.latLng.lng()
           }
           props.updatePointB(newPointB)
+        }}
+        onDragEnd={(event) => {
+          centerMap(event.latLng.toJSON())
         }}
         icon={{
           url: 'https://mt.googleapis.com/vt/icon/name=icons/spotlight/spotlight-poi.png'

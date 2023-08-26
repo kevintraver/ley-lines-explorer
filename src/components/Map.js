@@ -176,6 +176,7 @@ function Map() {
           pointA={pointA}
           pointB={pointB}
           midPoint={midPoint}
+          centerMap={centerMap}
           antipodalMidpoint={antipodalMidpoint}
           updatePointA={setPointA}
           updatePointB={setPointB}

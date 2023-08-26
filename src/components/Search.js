@@ -78,7 +78,7 @@ function Search({
             if (searchInputRef.current) {
               searchInputRef.current.value = ''
             }
-            centerMap(searchLocationPoint)
+            centerMap(event.latLng.toJSON())
           }}
           icon={{
             url: 'https://mt.google.com/vt/icon?color=ff004C13&name=icons/spotlight/spotlight-waypoint-blue.png'
