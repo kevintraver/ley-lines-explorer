@@ -41,11 +41,10 @@ function Controls({
     if (map) {
       centerMap(point)
       if (shouldZoomIn) {
-        setPrevZoomLevel(currentZoomLevel)
-        map.setZoom(8) // Zoom to level 8
+        map.setZoom(12) // Zoom to level 8
         setIconState(faMagnifyingGlassMinus) // Set icon to minus
       } else {
-        map.setZoom(prevZoomLevelA || currentZoomLevel) // Zoom to previous level or current level if null
+        map.setZoom(8)
         setIconState(faMagnifyingGlassPlus) // Reset icon to plus
       }
       setShouldZoomIn(!shouldZoomIn)
