@@ -92,6 +92,14 @@ function Map() {
     map.fitBounds(bounds)
   }
 
+  const fitMapBoundsToViewport = (map, viewport) => {
+    if (viewport) {
+      map.fitBounds(viewport)
+    } else {
+      map.setZoom(14)
+    }
+  }
+
   const centerMap = (point) => {
     if (map && point.lat && point.lng) {
       map.panTo(point)
@@ -123,6 +131,7 @@ function Map() {
         pointA={pointA}
         pointB={pointB}
         centerMap={centerMap}
+        fitMapBoundsToViewport={fitMapBoundsToViewport}
         searchLocation={searchLocation}
         searchLocationPoint={searchLocationPoint}
         setSearchLocation={setSearchLocation}

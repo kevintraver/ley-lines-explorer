@@ -16,6 +16,7 @@ function Search({
   pointA,
   pointB,
   centerMap,
+  fitMapBoundsToViewport,
   searchLocation,
   searchLocationPoint,
   setSearchLocation,
@@ -39,6 +40,9 @@ function Search({
         lat: location.lat(),
         lng: location.lng()
       })
+      if (places[0].geometry.viewport) {
+        // fitMapBoundsToViewport(map, places[0].geometry.viewport)
+      }
       centerMap(location)
     }
   }
