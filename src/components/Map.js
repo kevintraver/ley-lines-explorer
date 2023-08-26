@@ -78,7 +78,7 @@ function Map() {
     }
   }, [pointA, pointB])
 
-  const fitBoundsToPoints = (map) => {
+  const fitMapBoundsToPoints = (map) => {
     const points = [pointA, pointB]
     if (
       searchLocationPoint &&
@@ -100,7 +100,7 @@ function Map() {
 
   const onLoad = React.useCallback(function callback(map) {
     calculateMidpoint(pointA, pointB)
-    fitBoundsToPoints(map)
+    fitMapBoundsToPoints(map)
     setMap(map)
   }, [])
 
@@ -111,7 +111,7 @@ function Map() {
       onLoad={onLoad}
     >
       <Controls
-        fitBoundsToPoints={fitBoundsToPoints}
+        fitMapBoundsToPoints={fitMapBoundsToPoints}
         map={map}
         centerMap={centerMap}
         pointA={pointA}
