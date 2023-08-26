@@ -51,7 +51,6 @@ function Search({ ...props }) {
             setSearchLocationPoint(event.latLng.toJSON())
           }}
           onDragEnd={(event) => {
-            setSearchLocationPoint(event.latLng.toJSON())
             if (searchInputRef.current) {
               searchInputRef.current.value = ''
             }
