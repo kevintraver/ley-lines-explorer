@@ -5,7 +5,7 @@ import Map from './components/Map'
 function App() {
   return (
     <div className="App">
-      <main className="p-4">
+      <main>
         <Map />
       </main>
     </div>
