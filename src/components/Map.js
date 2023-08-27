@@ -19,8 +19,8 @@ import Search from './Search'
 const googleMapsLibraries = ['places', 'geometry']
 
 const mapContainerStyle = {
-  height: '700px',
-  width: '100%'
+  width: '100vw',
+  height: '100svh'
 }
 
 const options = {
