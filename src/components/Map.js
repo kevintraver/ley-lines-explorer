@@ -47,14 +47,14 @@ function Map() {
   // eslint-disable-next-line no-unused-vars
   const [pointA, setPointA] = useState({
     // Oracle Park, San Francisco, CA
-    lat: 37.7785951,
-    lng: -122.389269
+    lat: 37.77877314966314,
+    lng: -122.38914105684685
   })
   // eslint-disable-next-line no-unused-vars
   const [pointB, setPointB] = useState({
     // Wright Brothers Memorial, Kill Devil Hills, NC
-    lat: 36.0183,
-    lng: -75.6671
+    lat: 36.01426826716314,
+    lng: -75.66779406480183
   })
 
   const [midPoint, setMidPoint] = useState([])
