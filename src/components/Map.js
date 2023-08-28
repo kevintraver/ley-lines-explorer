@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from 'react'
 
-import { GoogleMap, useJsApiLoader } from '@react-google-maps/api'
+import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
@@ -178,10 +178,42 @@ function Map() {
           midPoint={midPoint}
           centerMap={centerMap}
           antipodalMidpoint={antipodalMidpoint}
-          updatePointA={setPointA}
-          updatePointB={setPointB}
         ></Path>
       ) : null}
+      <Marker
+        position={pointA}
+        draggable={true}
+        onDrag={(event) => {
+          const newPointA = {
+            lat: event.latLng.lat(),
+            lng: event.latLng.lng()
+          }
+          setPointA(newPointA)
+        }}
+        icon={{
+          url: 'https://mt.googleapis.com/vt/icon/name=icons/spotlight/spotlight-poi.png'
+        }}
+        onDragEnd={(event) => {
+          centerMap(event.latLng.toJSON())
+        }}
+      />
+      <Marker
+        position={pointB}
+        draggable={true}
+        onDrag={(event) => {
+          const newPointB = {
+            lat: event.latLng.lat(),
+            lng: event.latLng.lng()
+          }
+          setPointB(newPointB)
+        }}
+        onDragEnd={(event) => {
+          centerMap(event.latLng.toJSON())
+        }}
+        icon={{
+          url: 'https://mt.googleapis.com/vt/icon/name=icons/spotlight/spotlight-poi.png'
+        }}
+      />
     </GoogleMap>
   ) : (
     <></>
