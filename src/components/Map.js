@@ -15,6 +15,7 @@ import {
 import Path from './Path'
 import Controls from './Controls'
 import Search from './Search'
+import EndpointMarker from './EndpointMarker'
 
 const googleMapsLibraries = ['places', 'geometry']
 
@@ -171,6 +172,11 @@ function Map() {
         setSearchLocation={setSearchLocation}
         setSearchLocationPoint={setSearchLocationPoint}
       />
+      <EndpointMarker
+        point={pointA}
+        updatePoint={setPointA}
+        centerMap={centerMap}
+      />
       {midPoint && midPoint.lat && midPoint.lng ? (
         <Path
           pointA={pointA}
@@ -180,39 +186,10 @@ function Map() {
           antipodalMidpoint={antipodalMidpoint}
         ></Path>
       ) : null}
-      <Marker
-        position={pointA}
-        draggable={true}
-        onDrag={(event) => {
-          const newPointA = {
-            lat: event.latLng.lat(),
-            lng: event.latLng.lng()
-          }
-          setPointA(newPointA)
-        }}
-        icon={{
-          url: 'https://mt.googleapis.com/vt/icon/name=icons/spotlight/spotlight-poi.png'
-        }}
-        onDragEnd={(event) => {
-          centerMap(event.latLng.toJSON())
-        }}
-      />
-      <Marker
-        position={pointB}
-        draggable={true}
-        onDrag={(event) => {
-          const newPointB = {
-            lat: event.latLng.lat(),
-            lng: event.latLng.lng()
-          }
-          setPointB(newPointB)
-        }}
-        onDragEnd={(event) => {
-          centerMap(event.latLng.toJSON())
-        }}
-        icon={{
-          url: 'https://mt.googleapis.com/vt/icon/name=icons/spotlight/spotlight-poi.png'
-        }}
+      <EndpointMarker
+        point={pointB}
+        updatePoint={setPointB}
+        centerMap={centerMap}
       />
     </GoogleMap>
   ) : (
