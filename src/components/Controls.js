@@ -16,41 +16,8 @@ function Controls({
   pointA,
   pointB,
   searchLocation,
-  currentZoomLevel,
-  shouldZoomInA,
-  setShouldZoomInA,
-  shouldZoomInB,
-  setShouldZoomInB,
-  iconStateA,
-  setIconStateA,
-  iconStateB,
-  setIconStateB
+  currentZoomLevel
 }) {
-  // Local state to track the previous zoom levels and icon state
-  const [prevZoomLevelA, setPrevZoomLevelA] = useState(currentZoomLevel)
-  const [prevZoomLevelB, setPrevZoomLevelB] = useState(currentZoomLevel)
-
-  // Generalized function to handle centering and zooming
-  const handleCenterAndZoom = (
-    point,
-    shouldZoomIn,
-    setShouldZoomIn,
-    setPrevZoomLevel,
-    setIconState
-  ) => {
-    if (map) {
-      centerMap(point)
-      if (shouldZoomIn) {
-        map.setZoom(14) // Zoom to level 8
-        setIconState(faMagnifyingGlassMinus) // Set icon to minus
-      } else {
-        map.setZoom(8)
-        setIconState(faMagnifyingGlassPlus) // Reset icon to plus
-      }
-      setShouldZoomIn(!shouldZoomIn)
-    }
-  }
-
   return (
     <>
       {/* Existing buttons */}
@@ -64,33 +31,17 @@ function Controls({
       {/* Button for point A */}
       <button
         className="absolute bottom-8 left-4 z-10 bg-white px-4 h-8 flex items-center border border-gray-300 rounded cursor-pointer"
-        onClick={() =>
-          handleCenterAndZoom(
-            pointA,
-            shouldZoomInA,
-            setShouldZoomInA,
-            setPrevZoomLevelA,
-            setIconStateA
-          )
-        }
+        onClick={() => {}}
       >
-        <FontAwesomeIcon icon={iconStateA} />
+        <FontAwesomeIcon icon={faMagnifyingGlassPlus} />
       </button>
 
       {/* Button for point B */}
       <button
         className="absolute bottom-8 right-4 z-10 bg-white px-4 h-8 flex items-center border border-gray-300 rounded cursor-pointer"
-        onClick={() =>
-          handleCenterAndZoom(
-            pointB,
-            shouldZoomInB,
-            setShouldZoomInB,
-            setPrevZoomLevelB,
-            setIconStateB
-          )
-        }
+        onClick={() => {}}
       >
-        <FontAwesomeIcon icon={iconStateB} />
+        <FontAwesomeIcon icon={faMagnifyingGlassPlus} />
       </button>
     </>
   )
