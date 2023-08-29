@@ -177,15 +177,13 @@ function Map() {
         updatePoint={setPointA}
         centerMap={centerMap}
       />
-      {midPoint && midPoint.lat && midPoint.lng ? (
-        <Path
-          pointA={pointA}
-          pointB={pointB}
-          midPoint={midPoint}
-          centerMap={centerMap}
-          antipodalMidpoint={antipodalMidpoint}
-        ></Path>
-      ) : null}
+      <Path
+        pointA={pointA}
+        pointB={pointB}
+        midPoint={midPoint}
+        centerMap={centerMap}
+        antipodalMidpoint={antipodalMidpoint}
+      ></Path>
       <EndpointMarker
         point={pointB}
         updatePoint={setPointB}
