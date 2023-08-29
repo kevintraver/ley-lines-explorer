@@ -4,14 +4,6 @@ import React, { useEffect, useState } from 'react'
 
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api'
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  faGlobe,
-  faMagnifyingGlassLocation,
-  faMagnifyingGlassPlus,
-  faMagnifyingGlassMinus
-} from '@fortawesome/free-solid-svg-icons'
-
 import Path from './Path'
 import Controls from './Controls'
 import Search from './Search'
