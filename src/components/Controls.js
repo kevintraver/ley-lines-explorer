@@ -20,7 +20,6 @@ function Controls({
 }) {
   return (
     <>
-      {/* Existing buttons */}
       <button
         className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10 bg-white px-4 h-8 flex items-center border border-gray-300 rounded cursor-pointer"
         onClick={() => fitMapBoundsToPoints(map)}
@@ -28,7 +27,6 @@ function Controls({
         <FontAwesomeIcon icon={faGlobe} />
       </button>
 
-      {/* Button for point A */}
       <button
         className="absolute bottom-8 left-4 z-10 bg-white px-4 h-8 flex items-center border border-gray-300 rounded cursor-pointer"
         onClick={() => {}}
@@ -36,7 +34,6 @@ function Controls({
         <FontAwesomeIcon icon={faMagnifyingGlassPlus} />
       </button>
 
-      {/* Button for point B */}
       <button
         className="absolute bottom-8 right-4 z-10 bg-white px-4 h-8 flex items-center border border-gray-300 rounded cursor-pointer"
         onClick={() => {}}
