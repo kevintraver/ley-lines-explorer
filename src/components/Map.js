@@ -86,12 +86,6 @@ function Map() {
     setAntipodalMidpoint(antipodalMidpointObj)
   }
 
-  useEffect(() => {
-    if (isLoaded) {
-      calculateMidpoint(pointA, pointB)
-    }
-  }, [pointA, pointB])
-
   const fitMapBoundsToPoints = (map) => {
     const points = [pointA, pointB]
     if (
@@ -119,6 +113,12 @@ function Map() {
       map.panTo(point)
     }
   }
+
+  useEffect(() => {
+    if (isLoaded) {
+      calculateMidpoint(pointA, pointB)
+    }
+  }, [pointA, pointB])
 
   const onLoad = React.useCallback(function callback(map) {
     calculateMidpoint(pointA, pointB)
