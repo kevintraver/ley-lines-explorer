@@ -31,14 +31,14 @@ function Controls({
         className="absolute bottom-8 left-4 z-10 bg-white px-4 h-8 flex items-center border border-gray-300 rounded cursor-pointer"
         onClick={() => {}}
       >
-        <FontAwesomeIcon icon={faMagnifyingGlassPlus} />
+        <FontAwesomeIcon icon={faMagnifyingGlassLocation} />
       </button>
 
       <button
         className="absolute bottom-8 right-4 z-10 bg-white px-4 h-8 flex items-center border border-gray-300 rounded cursor-pointer"
         onClick={() => {}}
       >
-        <FontAwesomeIcon icon={faMagnifyingGlassPlus} />
+        <FontAwesomeIcon icon={faMagnifyingGlassLocation} />
       </button>
     </>
   )
