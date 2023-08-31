@@ -4,11 +4,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useRef, useCallback } from 'react'
 import { StandaloneSearchBox, Marker } from '@react-google-maps/api'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  faGlobe,
-  faMagnifyingGlassLocation
-} from '@fortawesome/free-solid-svg-icons'
+import { Globe, MapPin } from '@phosphor-icons/react'
 import OffsetPath from './OffsetPath'
 
 function Search({
@@ -62,7 +58,7 @@ function Search({
               className="ml-2 z-10 bg-white px-4 h-8 flex items-center border border-gray-300 rounded cursor-pointer"
               onClick={() => centerMap(searchLocationPoint)}
             >
-              <FontAwesomeIcon icon={faMagnifyingGlassLocation} />
+              <MapPin></MapPin>
             </button>
           </div>
         </>

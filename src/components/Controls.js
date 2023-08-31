@@ -1,13 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  faGlobe,
-  faMagnifyingGlassLocation,
-  faMagnifyingGlassPlus,
-  faMagnifyingGlassMinus
-} from '@fortawesome/free-solid-svg-icons'
+import { Globe, MapPin } from '@phosphor-icons/react'
 
 function Controls({
   fitMapBoundsToPoints,
@@ -24,21 +18,21 @@ function Controls({
         className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10 bg-white px-4 h-8 flex items-center border border-gray-300 rounded cursor-pointer"
         onClick={() => fitMapBoundsToPoints(map)}
       >
-        <FontAwesomeIcon icon={faGlobe} />
+        <Globe></Globe>
       </button>
 
       <button
         className="absolute bottom-8 left-4 z-10 bg-white px-4 h-8 flex items-center border border-gray-300 rounded cursor-pointer"
         onClick={() => {}}
       >
-        <FontAwesomeIcon icon={faMagnifyingGlassLocation} />
+        <MapPin></MapPin>
       </button>
 
       <button
         className="absolute bottom-8 right-4 z-10 bg-white px-4 h-8 flex items-center border border-gray-300 rounded cursor-pointer"
         onClick={() => {}}
       >
-        <FontAwesomeIcon icon={faMagnifyingGlassLocation} />
+        <MapPin></MapPin>
       </button>
     </>
   )
